@@ -9,6 +9,9 @@ class Chip8 {
         V8: number, V9: number, VA: number, VB: number,
         VC: number, VD: number, VE: number, VF: number,
     };
+    delayTimer: number;
+    soundTimer: number;
+    
     constructor() {
         this.memory = new ArrayBuffer(4096);
         this.stack = new Uint16Array(16);
@@ -20,5 +23,7 @@ class Chip8 {
             V8: 0x00, V9: 0x00, VA: 0x00, VB: 0x00,
             VC: 0x00, VD: 0x00, VE: 0x00, VF: 0x00, 
         }
+        this.delayTimer = 0x00;
+        this.soundTimer = 0x00;
     }
 }
