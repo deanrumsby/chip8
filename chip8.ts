@@ -31,6 +31,6 @@ class Chip8 {
         const view = new DataView(this.memory);
         const instruction = view.getUint16(this.PC);
         this.PC += 2;
-        return instruction; 
+        return instruction;
     }
 }
