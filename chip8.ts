@@ -11,7 +11,7 @@ class Chip8 {
     };
     delayTimer: number;
     soundTimer: number;
-    
+
     constructor() {
         this.memory = new ArrayBuffer(4096);
         this.stack = new Uint16Array(16);
@@ -25,5 +25,12 @@ class Chip8 {
         }
         this.delayTimer = 0x00;
         this.soundTimer = 0x00;
+    }
+
+    fetch() {
+        const view = new DataView(this.memory);
+        const instruction = view.getUint16(this.PC);
+        this.PC += 2;
+        return instruction; 
     }
 }
