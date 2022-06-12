@@ -1,0 +1,23 @@
+{
+  "name": "chip8",
+  "version": "1.0.0",
+  "description": "A chip8 interpreter written in TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deanrumsby/chip8.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deanrumsby/chip8/issues"
+  },
+  "homepage": "https://github.com/deanrumsby/chip8#readme",
+  "dependencies": {
+    "typescript": "^4.7.3"
+  }
+}
