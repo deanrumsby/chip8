@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/deanrumsby/chip8#readme",
   "dependencies": {
-    "jest": "^28.1.1",
     "typescript": "^4.7.3"
+  },
+  "devDependencies": {
+    "jest": "^28.1.1"
   }
 }
