@@ -164,7 +164,51 @@ export default class Chip8 {
                 }
             
             case 0xF:
-                
+                switch (instruction.nn) {
+                    case 0x07:
+                        // SET VX TO CURRENT VALUE OF DELAY TIMER
+                        break;
+
+                    case 0x0A:
+                        // HALTS PC UNTIL KEY IS PRESSED
+                        break;
+
+                    case 0x15:
+                        // SETS DELAY TIMER TO VALUE OF VX
+                        break;
+
+                    case 0x18:
+                        // SETS THE SOUND TIMER TO VALUE IN VX
+                        break;
+
+                    case 0x1E:
+                        // SET I += VX (AFFECTS OVERFLOW FLAG)
+                        break;
+
+                    case 0x29:
+                        // SET I TO THE FONT ADDRESS OF THE HEX
+                        // CHARACTER IN VX
+                        break;
+
+                    case 0x33:
+                        // BINARY CODED DECIMAL CONVERSION -
+                        // SEE DOCS
+                        break;
+
+                    case 0x55:
+                        // STORES REGISTERS TO MEMORY - SEE DOCS
+                        break;
+
+                    case 0x65:
+                        // LOADS REGISTERS FROM MEMORY - SEE DOCS
+                        break;
+                }
         }
+    }
+
+    step() {
+        const instruction = this.fetch();
+        const decodedInstruction = this.decode(instruction);
+        this.execute(decodedInstruction);
     }
 }
