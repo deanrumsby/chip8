@@ -7,12 +7,7 @@ export default class Chip8 {
     stack: Uint16Array;
     PC: number;
     I: number;
-    registers: {
-        V0: number, V1: number, V2: number, V3: number,
-        V4: number, V5: number, V6: number, V7: number,
-        V8: number, V9: number, VA: number, VB: number,
-        VC: number, VD: number, VE: number, VF: number,
-    };
+    registers: Array<number>
     delayTimer: number;
     soundTimer: number;
 
@@ -22,12 +17,12 @@ export default class Chip8 {
         this.stack = new Uint16Array(16);
         this.PC = 0x200;
         this.I = 0x00;
-        this.registers = {
-            V0: 0x00, V1: 0x00, V2: 0x00, V3: 0x00,
-            V4: 0x00, V5: 0x00, V6: 0x00, V7: 0x00,
-            V8: 0x00, V9: 0x00, VA: 0x00, VB: 0x00,
-            VC: 0x00, VD: 0x00, VE: 0x00, VF: 0x00, 
-        }
+        this.registers = [
+            0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 
+        ];
         this.delayTimer = 0x00;
         this.soundTimer = 0x00;
     }
@@ -64,6 +59,8 @@ export default class Chip8 {
                 break;
             
             case 0x1:
+                // 1NNN JUMP
+                // Jumps the program counter to instruction NNN
                 this.PC = instruction.nnn;
                 break;
             
@@ -84,7 +81,9 @@ export default class Chip8 {
                 break;
 
             case 0x6:
-                // SET VX = NN
+                // 6XNN SET
+                // Sets VX = NN
+                this.registers[instruction.x] = instruction.nn;
                 break;
 
             case 0x7:
