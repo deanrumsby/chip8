@@ -1,4 +1,4 @@
-import Chip8 from '../chip8';
+import Chip8 from '../classes/chip8';
 
 describe('fetch', () => {
   let chip8: Chip8;

@@ -1,4 +1,4 @@
-import DecodedInstruction from "./interfaces/decoded-instruction";
+import DecodedInstruction from "../interfaces/decoded-instruction";
 
 export default class Chip8 {
     memory: DataView;
