@@ -32,4 +32,16 @@ export default class Chip8 {
         this.PC += 2;
         return instruction;
     }
+
+    decode(instruction: number) {
+        const decodedInstruction = {
+            type: (instruction & 0b1111000000000000) >> 12,
+            nnn: instruction & 0b0000111111111111,
+            n: instruction & 0b0000000000001111,
+            x: (instruction & 0b0000111100000000) >> 8,
+            y: (instruction & 0b0000000011110000) >> 4,
+            kk: instruction & 0b0000000011111111
+        }
+        return decodedInstruction;
+    }
 }
