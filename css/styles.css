@@ -1,0 +1,6 @@
+.display {
+    outline: 1px solid black;
+    width: 50%;
+    aspect-ratio: 2 / 1;
+    image-rendering: pixelated;
+}
