@@ -1,5 +1,5 @@
 export default class Chip8 {
-    memory: ArrayBuffer;
+    memory: DataView;
     stack: Uint16Array;
     PC: number;
     I: number;
@@ -13,7 +13,7 @@ export default class Chip8 {
     soundTimer: number;
 
     constructor() {
-        this.memory = new ArrayBuffer(4096);
+        this.memory = new DataView(new ArrayBuffer(4096));
         this.stack = new Uint16Array(16);
         this.PC = 0x200;
         this.I = 0x00;
@@ -28,8 +28,7 @@ export default class Chip8 {
     }
 
     fetch() {
-        const view = new DataView(this.memory);
-        const instruction = view.getUint16(this.PC);
+        const instruction = this.memory.getUint16(this.PC);
         this.PC += 2;
         return instruction;
     }

@@ -6,11 +6,10 @@ describe('fetch', () => {
 
   beforeEach(() => {
     chip8 = new Chip8();
-    view = new DataView(chip8.memory);
   });
 
   test('reads the first program instruction from memory', () => {
-    view.setUint16(chip8.PC, 0x2332);
+    chip8.memory.setUint16(chip8.PC, 0x2332);
     expect(chip8.fetch()).toBe(0x2332);
   });
 
@@ -20,7 +19,7 @@ describe('fetch', () => {
   });
 
   test('reads two instructions sequentially', () => {
-    view.setUint32(chip8.PC, 0x12345678);
+    chip8.memory.setUint32(chip8.PC, 0x12345678);
     const instructions = [];
     instructions.push(chip8.fetch());
     instructions.push(chip8.fetch());
