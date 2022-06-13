@@ -1,6 +1,8 @@
 import DecodedInstruction from "../interfaces/decoded-instruction";
+import Display from "./display";
 
 export default class Chip8 {
+    display: Display;
     memory: DataView;
     stack: Uint16Array;
     PC: number;
@@ -15,6 +17,7 @@ export default class Chip8 {
     soundTimer: number;
 
     constructor() {
+        this.display = new Display();
         this.memory = new DataView(new ArrayBuffer(4096));
         this.stack = new Uint16Array(16);
         this.PC = 0x200;
@@ -61,7 +64,7 @@ export default class Chip8 {
                 break;
             
             case 0x1:
-                // JUMP TO NNN
+                this.PC = instruction.nnn;
                 break;
             
             case 0x2:

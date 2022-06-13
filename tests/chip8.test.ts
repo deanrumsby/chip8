@@ -60,3 +60,22 @@ describe('decode', () => {
     expect(instruction.y).toEqual(0x0002);
   });
 });
+
+describe('execute', () => {
+  let chip8: Chip8;
+  let instruction: DecodedInstruction;
+
+  beforeEach(() => {
+    chip8 = new Chip8();
+  });
+
+  test('1NNN', () => {
+    // 0x12A3
+    instruction = {
+      type: 0x1, nnn: 0x2A3, nn: 0xA3,
+      n: 0x3, x: 0x2, y: 0xA
+    }
+    chip8.execute(instruction);
+    expect(chip8.PC).toBe(0x02A3);
+  });
+});
