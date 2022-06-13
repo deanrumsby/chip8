@@ -1,3 +1,5 @@
+import DecodedInstruction from "./interfaces/decoded-instruction";
+
 export default class Chip8 {
     memory: DataView;
     stack: Uint16Array;
@@ -34,7 +36,7 @@ export default class Chip8 {
     }
 
     decode(instruction: number) {
-        const decodedInstruction = {
+        const decodedInstruction: DecodedInstruction = {
             type: (instruction & 0b1111000000000000) >> 12,
             nnn: instruction & 0b0000111111111111,
             n: instruction & 0b0000000000001111,
@@ -43,5 +45,9 @@ export default class Chip8 {
             kk: instruction & 0b0000000011111111
         }
         return decodedInstruction;
+    }
+
+    execute(instruction: DecodedInstruction) {
+        
     }
 }
