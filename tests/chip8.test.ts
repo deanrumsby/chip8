@@ -1,4 +1,5 @@
 import Chip8 from '../classes/chip8';
+import DecodedInstruction from '../interfaces/decoded-instruction';
 
 describe('fetch', () => {
   let chip8: Chip8;
@@ -28,10 +29,7 @@ describe('fetch', () => {
 
 describe('decode', () => {
   let chip8: Chip8;
-  let instruction: {
-    type: number, nnn: number, n: number,
-    x: number, y: number, kk: number 
-  }
+  let instruction: DecodedInstruction;
 
   beforeAll(() => {
     chip8 = new Chip8();
@@ -46,6 +44,10 @@ describe('decode', () => {
     expect(instruction.nnn).toEqual(0x052E);
   });
 
+  test("decodes variable 'nn'", () => {
+    expect(instruction.nn).toEqual(0x002E);
+  });
+
   test("decodes variable 'n'", () => {
     expect(instruction.n).toEqual(0x000E);
   });
@@ -56,9 +58,5 @@ describe('decode', () => {
 
   test("decodes variable 'y'", () => {
     expect(instruction.y).toEqual(0x0002);
-  });
-
-  test("decodes variable 'kk'", () => {
-    expect(instruction.kk).toEqual(0x002E);
   });
 });

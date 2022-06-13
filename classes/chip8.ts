@@ -39,15 +39,132 @@ export default class Chip8 {
         const decodedInstruction: DecodedInstruction = {
             type: (instruction & 0b1111000000000000) >> 12,
             nnn: instruction & 0b0000111111111111,
+            nn: instruction & 0b0000000011111111,
             n: instruction & 0b0000000000001111,
             x: (instruction & 0b0000111100000000) >> 8,
             y: (instruction & 0b0000000011110000) >> 4,
-            kk: instruction & 0b0000000011111111
         }
         return decodedInstruction;
     }
 
     execute(instruction: DecodedInstruction) {
-        
+        switch (instruction.type) {
+            case 0x0:
+                switch (instruction.n) {
+                    case 0x0:
+                        // CLEAR SCREEN
+                        break;
+                    case 0xE:
+                        // RETURN FROM SUBROUTINE
+                        break;
+                }
+                break;
+            
+            case 0x1:
+                // JUMP TO NNN
+                break;
+            
+            case 0x2:
+                // CALL SUBROUTINE AT NNN
+                break;
+
+            case 0x3:
+                // SKIP INSTRUCTION IF VX === NN
+                break;
+
+            case 0x4:
+                // SKIP INSTRUCTION IF VX !== NN
+                break;
+
+            case 0x5:
+                // SKIP INSTRUCTION IF VX === VY
+                break;
+
+            case 0x6:
+                // SET VX = NN
+                break;
+
+            case 0x7:
+                // VX += NN (NO OVERFLOW VF FLAG)
+                break;
+            
+            case 0x8:
+                switch (instruction.n) {
+                    case 0x0:
+                        // SET VX = VY
+                        break;
+                    
+                    case 0x1:
+                        // VX |= VY
+                        break;
+
+                    case 0x2:
+                        // VX &= VY
+                        break;
+                    
+                    case 0x3:
+                        // VX ^= VY
+                        break;
+
+                    case 0x4:
+                        // VX += VY (WITH OVERFLOW VF FLAG)
+                        break;
+
+                    case 0x5:
+                        // VX -= VY (AFFECTS VF FLAG)
+                        break;
+
+                    case 0x6:
+                        // OPTION ONE: SET VX = VY, then VX >> 1
+                        // (SHIFTED OUT BIT IN VF FLAG)
+                        // OPTION TWO : VX >> 1
+                        // (SHIFTED OUT BIT IN VF FLAG)
+                        break;
+
+                    case 0x7:
+                        // VX = VY - VX (AFFECTS FLAG)
+                        break;
+
+                    case 0xE:
+                        // OPTION ONE: SET VX = VY, then VX << 1
+                        // (SHIFTED OUT BIT IN VF FLAG)
+                        // OPTION TWO : VX << 1
+                        // (SHIFTED OUT BIT IN VF FLAG)
+                        break;
+                }
+            
+            case 0xA:
+                // SET I = NNN
+                break;
+
+            case 0xB:
+                // OPTION ONE: JUMP TO NNN + V0
+                // OPTION TWO: JUMP TO XNN + VX
+                break;
+
+            case 0xC:
+                // GENERATE RANDOM NUMBER 'R', THEN VX = R & NN
+                break;
+                    
+            case 0xD:
+                // DISPLAY - CHECK DOCS
+                break;
+
+            case 0xE:
+                switch (instruction.n) {
+                    case 0x1:
+                        // SKIP INSTRUCTION IF BUTTON WITH VALUE VX NOT 
+                        // CURRENTLY PRESSED DOWN
+                        break;
+                    
+                    case 0xE:
+                        // SKIP INSTRUCTION IF BUTTON WITH VALUE VX IS 
+                        // CURRENTLY PRESSED DOWN
+                        break;                  
+                }
+            
+            case 0xF:
+                
+        }
     }
 }
