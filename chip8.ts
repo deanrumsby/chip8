@@ -1,4 +1,4 @@
-class Chip8 {
+export default class Chip8 {
     memory: ArrayBuffer;
     stack: Uint16Array;
     PC: number;
@@ -15,7 +15,7 @@ class Chip8 {
     constructor() {
         this.memory = new ArrayBuffer(4096);
         this.stack = new Uint16Array(16);
-        this.PC = 0x00;
+        this.PC = 0x200;
         this.I = 0x00;
         this.registers = {
             V0: 0x00, V1: 0x00, V2: 0x00, V3: 0x00,
