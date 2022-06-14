@@ -6,8 +6,8 @@ export default class Display {
     imageData: ImageData;
 
     constructor() {
-        this.canvas = document.querySelector('#display');
-        this.ctx = this.canvas.getContext('2d');
+        this.canvas = document.querySelector('#display') as HTMLCanvasElement;
+        this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
         this.width = this.canvas.width;
         this.height = this.canvas.height;
         this.imageData = this.ctx.createImageData(this.width, this.height);
