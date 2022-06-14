@@ -87,7 +87,10 @@ export default class Chip8 {
                 break;
 
             case 0x7:
-                // VX += NN (NO OVERFLOW VF FLAG)
+                // 7XNN ADD
+                // Sets VX += NN
+                // No flag set on overflow
+                this.registers[instruction.x] += instruction.nn;
                 break;
             
             case 0x8:

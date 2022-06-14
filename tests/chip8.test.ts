@@ -88,4 +88,15 @@ describe('execute', () => {
     chip8.execute(instruction);
     expect(chip8.registers[0xE]).toBe(0x0034);
   });
+
+  test('7XNN', () => {
+    // 0x729A with VX = 5
+    instruction = {
+      type: 0x7, nnn: 0x29A, nn: 0x9A,
+      n: 0xA, x: 0x2, y: 0x9
+    }
+    chip8.registers[0x2] = 0x05;
+    chip8.execute(instruction);
+    expect(chip8.registers[0x2]).toBe(0x9F);
+  });
 });
