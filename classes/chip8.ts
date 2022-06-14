@@ -59,7 +59,7 @@ export default class Chip8 {
                 break;
             
             case 0x1:
-                // 1NNN JUMP
+                // 1NNN: JUMP
                 // Jumps the program counter to instruction NNN
                 this.PC = instruction.nnn;
                 break;
@@ -81,13 +81,13 @@ export default class Chip8 {
                 break;
 
             case 0x6:
-                // 6XNN SET
+                // 6XNN: SET
                 // Sets VX = NN
                 this.registers[instruction.x] = instruction.nn;
                 break;
 
             case 0x7:
-                // 7XNN ADD
+                // 7XNN: ADD
                 // Sets VX += NN
                 // No flag set on overflow
                 this.registers[instruction.x] += instruction.nn;
@@ -139,7 +139,9 @@ export default class Chip8 {
                 }
             
             case 0xA:
-                // SET I = NNN
+                // ANNN: SET INDEX
+                // Sets I = NNN
+                this.I = instruction.nnn;
                 break;
 
             case 0xB:

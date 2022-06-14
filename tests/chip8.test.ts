@@ -99,4 +99,14 @@ describe('execute', () => {
     chip8.execute(instruction);
     expect(chip8.registers[0x2]).toBe(0x9F);
   });
+
+  test('ANNN', () => {
+    // 0xA232
+    instruction = {
+      type: 0xA, nnn: 0x232, nn: 0x32,
+      n: 0x2, x: 0x2, y: 0x3
+    }
+    chip8.execute(instruction);
+    expect(chip8.I).toBe(0x232);
+  });
 });
