@@ -27,6 +27,11 @@ export default class Chip8 {
     this.soundTimer = 0x00;
   }
 
+  async load(path: string) {
+    const data = await fetch(path);
+    console.log(data);
+  }
+
   fetch() {
     const instruction = this.memory.getUint16(this.PC);
     this.PC += 2;

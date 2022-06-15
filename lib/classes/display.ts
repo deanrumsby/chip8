@@ -28,6 +28,7 @@ export default class Display {
 
   toggleByte(x: number, y: number, byte: number) {
     const byteString = byte.toString(2);
+    console.log(byteString);
     for (let i = 0; i < byteString.length; i++) {
       if (byteString[i] === '1') {
         this.togglePixel(x + i, y);
