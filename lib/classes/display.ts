@@ -31,7 +31,7 @@ export default class Display {
     }
   }
 
-  update() {
+  draw() {
     this.ctx.putImageData(this.imageData, 0, 0);
   }
 }

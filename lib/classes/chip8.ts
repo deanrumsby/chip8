@@ -154,7 +154,14 @@ export default class Chip8 {
         break;
 
       case 0xD:
-        // DISPLAY - CHECK DOCS
+        const x = instruction.x;
+        const y = instruction.y;
+        const height = instruction.n;
+        for (let i = 0; i < height; i++) {
+          const byte = this.memory.getUint8(this.I + i);
+          this.display.toggleByte(x, y + i, byte);
+        }
+        this.display.draw();
         break;
 
       case 0xE:
