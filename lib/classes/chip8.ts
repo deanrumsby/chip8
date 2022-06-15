@@ -50,7 +50,9 @@ export default class Chip8 {
       case 0x0:
         switch (instruction.n) {
           case 0x0:
-            // CLEAR SCREEN
+            // 00E0: CLEAR SCREEN
+            // Clears the display
+            this.display.clearScreen();
             break;
           case 0xE:
             // RETURN FROM SUBROUTINE
@@ -154,6 +156,8 @@ export default class Chip8 {
         break;
 
       case 0xD:
+        // DXYN: DISPLAY
+        // Draws a sprite N tall at location X, Y on the display
         const x = instruction.x;
         const y = instruction.y;
         const height = instruction.n;

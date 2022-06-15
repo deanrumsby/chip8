@@ -13,6 +13,10 @@ export default class Display {
     this.imageData = this.ctx.createImageData(this.width, this.height);
   }
 
+  clearScreen() {
+    this.imageData = this.ctx.createImageData(this.width, this.height);
+  }
+
   // TO-DO: Magic numbers to be made explicit
   // offset by 4x + (64 * 4)((31 - y)
   togglePixel(x: number, y: number) {
