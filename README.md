@@ -11,7 +11,8 @@ A chip8 interpreter written in TypeScript
 
 ## How to build and run tests
 You will need node.js and npm installed. For details go to https://docs.npmjs.com/downloading-and-installing-node-js-and-npm/
-Then install the dependencies by running "npm install"
+
+Then install the app's dependencies by running "npm install" from inside the repo root folder.
 
 Now you can use the following terminal commands:
 - "npm run test" will run the test suite
