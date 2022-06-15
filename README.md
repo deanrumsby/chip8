@@ -10,5 +10,10 @@ A chip8 interpreter written in TypeScript
 - Using ES Modules.
 
 ## How to build and run tests
-To run the test suite, use the command "npm run test".
-To make a build of the project, use "npm run build" - the build will be in 'dist/'
+You will need node.js and npm installed. For details go to https://docs.npmjs.com/downloading-and-installing-node-js-and-npm/
+Then install the dependencies by running "npm install"
+
+Now you can use the following terminal commands:
+- "npm run test" will run the test suite
+- "npm run build" will build the app into the 'dist/' directory
+- "npx http-server dist" will start a local server 127.0.0.1:8080 where you can demo the app locally
