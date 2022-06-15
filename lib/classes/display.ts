@@ -14,11 +14,13 @@ export default class Display {
     }
 
     // TO-DO: Magic numbers to be made explicit
+    // offset by 4x + (64 * 4)((31 - y)
     togglePixel(x: number, y: number) {
-        const offset = (4 * x) + (64 * y) + 3;
+        const offset = (4 * x) - (256 * y) + 7936 + 3;
         const opacity = this.imageData.data[offset];
-        const newOpacity = 1 - opacity;
+        const newOpacity = 255 - opacity;
         this.imageData.data[offset] = newOpacity;
+        console.log(this.imageData);
     }
 
     update() {
