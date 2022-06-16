@@ -122,7 +122,11 @@ export default class Chip8 {
         break;
 
       case 0x5:
-        // SKIP INSTRUCTION IF VX === VY
+        // 5XY0: SKIP
+        // Skips the next instruction if VX === VY
+        if (this.registers[instruction.x] === this.registers[instruction.y]) {
+          this.PC += 2;
+        }
         break;
 
       case 0x6:

@@ -154,4 +154,28 @@ describe('execute', () => {
     chip8.execute(instruction);
     expect(chip8.PC).toBe(0x200);
   });
+
+  test('5XY0 - where VX === VY', () => {
+    // 0x52A0
+    chip8.registers[0x2] = 0xEE;
+    chip8.registers[0xA] = 0xEE;
+    instruction = {
+      type: 0x5, nnn: 0x2A0, nn: 0xA0,
+      n: 0x0, x: 0x2, y: 0xA
+    }
+    chip8.execute(instruction);
+    expect(chip8.PC).toBe(0x202);
+  });
+
+  test('5XY0 - where VX !== VY', () => {
+    // 0x52A0
+    chip8.registers[0x2] = 0xF9;
+    chip8.registers[0xA] = 0xEE;
+    instruction = {
+      type: 0x5, nnn: 0x2A0, nn: 0xA0,
+      n: 0x0, x: 0x2, y: 0xA
+    }
+    chip8.execute(instruction);
+    expect(chip8.PC).toBe(0x200);
+  });
 });
