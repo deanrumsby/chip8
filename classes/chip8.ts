@@ -106,14 +106,19 @@ export default class Chip8 {
         break;
 
       case 0x3:
-        // SKIP INSTRUCTION IF VX === NN
+        // 3XNN: SKIP
+        // Skips the next instruction if VX === NN
         if (this.registers[instruction.x] === instruction.nn) {
           this.PC += 2;
         }
         break;
 
       case 0x4:
-        // SKIP INSTRUCTION IF VX !== NN
+        // 4XNN: SKIP
+        // Skips the next instruction if VX !== NN
+        if (this.registers[instruction.x] !== instruction.nn) {
+          this.PC += 2;
+        }
         break;
 
       case 0x5:
