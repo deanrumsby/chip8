@@ -113,93 +113,104 @@ describe('execute', () => {
 
   test('3XNN - where VX === NN', () => {
     // 0x3512
-    chip8.registers[0x5] = 0x12;
     instruction = {
       type: 0x3, nnn: 0x512, nn: 0x12,
       n: 0x2, x: 0x5, y: 0x1
     }
+    chip8.registers[instruction.x] = 0x12;
     chip8.execute(instruction);
     expect(chip8.PC).toBe(0x202);
   });
 
   test('3XNN - where VX !== NN', () => {
     // 0x3512
-    chip8.registers[0x5] = 0x10;
     instruction = {
       type: 0x3, nnn: 0x512, nn: 0x12,
       n: 0x2, x: 0x5, y: 0x1
     }
+    chip8.registers[instruction.x] = 0x10;
     chip8.execute(instruction);
     expect(chip8.PC).toBe(0x200);
   });
 
   test('4XNN - where VX !== NN', () => {
     // 0x46FA
-    chip8.registers[0x6] = 0x10;
     instruction = {
       type: 0x4, nnn: 0x6FA, nn: 0xFA,
       n: 0xA, x: 0x6, y: 0xF
     }
+    chip8.registers[instruction.x] = 0x10;
     chip8.execute(instruction);
     expect(chip8.PC).toBe(0x202);
   });
 
   test('4XNN - where VX === NN', () => {
     // 0x46FA
-    chip8.registers[0x6] = 0xFA;
     instruction = {
       type: 0x4, nnn: 0x6FA, nn: 0xFA,
       n: 0xA, x: 0x6, y: 0xF
     }
+    chip8.registers[instruction.x] = 0xFA;
     chip8.execute(instruction);
     expect(chip8.PC).toBe(0x200);
   });
 
   test('5XY0 - where VX === VY', () => {
     // 0x52A0
-    chip8.registers[0x2] = 0xEE;
-    chip8.registers[0xA] = 0xEE;
     instruction = {
       type: 0x5, nnn: 0x2A0, nn: 0xA0,
       n: 0x0, x: 0x2, y: 0xA
     }
+    chip8.registers[instruction.x] = 0xEE;
+    chip8.registers[instruction.y] = 0xEE;
     chip8.execute(instruction);
     expect(chip8.PC).toBe(0x202);
   });
 
   test('5XY0 - where VX !== VY', () => {
     // 0x52A0
-    chip8.registers[0x2] = 0xF9;
-    chip8.registers[0xA] = 0xEE;
     instruction = {
       type: 0x5, nnn: 0x2A0, nn: 0xA0,
       n: 0x0, x: 0x2, y: 0xA
     }
+    chip8.registers[instruction.x] = 0xF9;
+    chip8.registers[instruction.y] = 0xEE;
     chip8.execute(instruction);
     expect(chip8.PC).toBe(0x200);
   });
 
   test('9XY0 - where VX !== VY', () => {
     // 0x9E00
-    chip8.registers[0xE] = 0x03;
-    chip8.registers[0x0] = 0x07;
     instruction = {
       type: 0x9, nnn: 0xE000, nn: 0x00,
       n: 0x0, x: 0xE, y: 0x0
     }
+    chip8.registers[instruction.x] = 0x03;
+    chip8.registers[instruction.y] = 0x07;
     chip8.execute(instruction);
     expect(chip8.PC).toBe(0x202);
   });
 
   test('9XY0 - where VX === VY', () => {
     // 0x9E00
-    chip8.registers[0xE] = 0x07;
-    chip8.registers[0x0] = 0x07;
     instruction = {
       type: 0x9, nnn: 0xE000, nn: 0x00,
       n: 0x0, x: 0xE, y: 0x0
     }
+    chip8.registers[instruction.x] = 0x07;
+    chip8.registers[instruction.y] = 0x07;
     chip8.execute(instruction);
     expect(chip8.PC).toBe(0x200);
+  });
+
+  test('8XY0', () => {
+    // 0x8160
+    instruction = {
+      type: 0x8, nnn: 0x160, nn: 0x60,
+      n: 0x0, x: 0x1, y: 0x6
+    }
+    chip8.registers[instruction.y] = 0x23;
+    chip8.execute(instruction);
+    expect(chip8.registers[instruction.x]).toBe(0x23);
   });
 });

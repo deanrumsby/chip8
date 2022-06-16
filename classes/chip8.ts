@@ -145,7 +145,9 @@ export default class Chip8 {
       case 0x8:
         switch (instruction.n) {
           case 0x0:
-            // SET VX = VY
+            // 8XY0: SET
+            // Sets VX = VY
+            this.registers[instruction.x] = this.registers[instruction.y];
             break;
 
           case 0x1:
