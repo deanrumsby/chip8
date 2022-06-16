@@ -186,6 +186,14 @@ export default class Chip8 {
             // (SHIFTED OUT BIT IN VF FLAG)
             break;
         }
+      
+      case 0x9:
+        // 9XY0: SKIP
+        // Skips the next instruction if VX !== VY
+        if (this.registers[instruction.x] !== this.registers[instruction.y]) {
+          this.PC += 2;
+        }
+        break;
 
       case 0xA:
         // ANNN: SET INDEX
