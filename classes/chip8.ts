@@ -1,5 +1,6 @@
 import DecodedInstruction from "../interfaces/decoded-instruction";
 import Display from "./display";
+import { FONT } from "../data/font";
 
 export default class Chip8 {
   display: Display;
@@ -31,9 +32,14 @@ export default class Chip8 {
     this.delayTimer = 0x00;
     this.soundTimer = 0x00;
     this.instructionsPerSecond = 700;
+
+    this.load('')
   }
 
   async load(path: string) {
+    for (let i = 0; i < FONT.length; i++) {
+      this.memory.setUint8(0x50 + i, FONT[i]);
+    }
     const data = await fetch(path);
     const buffer = await data.arrayBuffer();
     const uint8 = new Uint8Array(buffer);
