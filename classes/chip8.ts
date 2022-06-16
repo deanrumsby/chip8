@@ -32,8 +32,6 @@ export default class Chip8 {
     this.delayTimer = 0x00;
     this.soundTimer = 0x00;
     this.instructionsPerSecond = 700;
-
-    this.load('')
   }
 
   async load(path: string) {

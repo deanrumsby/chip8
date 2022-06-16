@@ -1,6 +1,6 @@
 import Chip8 from '../classes/chip8';
 import DecodedInstruction from '../interfaces/decoded-instruction';
-jest.mock('../lib/classes/display');
+jest.mock('../classes/display');
 
 describe('fetch', () => {
   let chip8: Chip8;
