@@ -110,4 +110,26 @@ describe('execute', () => {
     chip8.execute(instruction);
     expect(chip8.I).toBe(0x232);
   });
+
+  test('3XNN - where VX === NN', () => {
+    // 0x3512
+    chip8.registers[0x5] = 0x12;
+    instruction = {
+      type: 0x3, nnn: 0x512, nn: 0x12,
+      n: 0x2, x: 0x5, y: 0x1
+    }
+    chip8.execute(instruction);
+    expect(chip8.PC).toBe(0x202);
+  });
+
+  test('3XNN - where VX !== NN', () => {
+    // 0x3512
+    chip8.registers[0x5] = 0x10;
+    instruction = {
+      type: 0x3, nnn: 0x512, nn: 0x12,
+      n: 0x2, x: 0x5, y: 0x1
+    }
+    chip8.execute(instruction);
+    expect(chip8.PC).toBe(0x200);
+  });
 });
