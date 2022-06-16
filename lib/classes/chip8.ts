@@ -5,17 +5,22 @@ export default class Chip8 {
   display: Display;
   memory: DataView;
   stack: Uint16Array;
+  start: number;
+  end: number;
   PC: number;
   I: number;
   registers: Array<number>
   delayTimer: number;
   soundTimer: number;
+  instructionsPerSecond: number;
 
   constructor() {
     this.display = new Display();
     this.memory = new DataView(new ArrayBuffer(4096));
     this.stack = new Uint16Array(16);
-    this.PC = 0x200;
+    this.start = 0x200;
+    this.end = 0x1000;
+    this.PC = this.start;
     this.I = 0x00;
     this.registers = [
       0x00, 0x00, 0x00, 0x00,
@@ -25,11 +30,22 @@ export default class Chip8 {
     ];
     this.delayTimer = 0x00;
     this.soundTimer = 0x00;
+    this.instructionsPerSecond = 700;
   }
 
   async load(path: string) {
     const data = await fetch(path);
-    console.log(data);
+    const buffer = await data.arrayBuffer();
+    const uint8 = new Uint8Array(buffer);
+    for (let i = 0; i < uint8.byteLength; i++) {
+      this.memory.setUint8(this.start + i, uint8[i]);
+    }
+  }
+
+  dumpMemory() {
+    for (let i = 0; i < 4096; i += 2) {
+      console.log(i.toString(16), this.memory.getUint16(i).toString(16));
+    }
   }
 
   fetch() {
@@ -163,8 +179,8 @@ export default class Chip8 {
       case 0xD:
         // DXYN: DISPLAY
         // Draws a sprite N tall at location X, Y on the display
-        const x = instruction.x;
-        const y = instruction.y;
+        const x = this.registers[instruction.x] % 64;
+        const y = this.registers[instruction.y] % 32;
         const height = instruction.n;
         for (let i = 0; i < height; i++) {
           const byte = this.memory.getUint8(this.I + i);
@@ -233,5 +249,11 @@ export default class Chip8 {
     const instruction = this.fetch();
     const decodedInstruction = this.decode(instruction);
     this.execute(decodedInstruction);
+  }
+
+  run() {
+    setInterval(() => {
+      this.step()
+    }, 1000 / this.instructionsPerSecond);
   }
 }

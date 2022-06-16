@@ -20,7 +20,8 @@ export default class Display {
   // TO-DO: Magic numbers to be made explicit
   // offset by 4x + (64 * 4)((31 - y)
   togglePixel(x: number, y: number) {
-    const offset = (4 * x) - (256 * y) + 7936 + 3;
+    //const offset = (4 * x) - (256 * y) + 7936 + 3;
+    const offset = (4 * x) + (256 * y) + 3;
     const opacity = this.imageData.data[offset];
     const newOpacity = 255 - opacity;
     this.imageData.data[offset] = newOpacity;
@@ -28,9 +29,10 @@ export default class Display {
 
   toggleByte(x: number, y: number, byte: number) {
     const byteString = byte.toString(2);
-    console.log(byteString);
-    for (let i = 0; i < byteString.length; i++) {
-      if (byteString[i] === '1') {
+    const padding = '0'.repeat(8 - byteString.length)
+    const paddedByteString = padding + byteString;
+    for (let i = 0; i < 8; i++) {
+      if (paddedByteString[i] === '1') {
         this.togglePixel(x + i, y);
       }
     }
