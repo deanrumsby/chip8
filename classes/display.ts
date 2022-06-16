@@ -15,6 +15,7 @@ export default class Display {
 
   clearScreen() {
     this.imageData = this.ctx.createImageData(this.width, this.height);
+    this.draw();
   }
 
   // TO-DO: Magic numbers to be made explicit

@@ -35,14 +35,24 @@ export default class Chip8 {
   }
 
   async load(path: string) {
+    // first load font into memory 0x50 - 0x9F
     for (let i = 0; i < FONT.length; i++) {
       this.memory.setUint8(0x50 + i, FONT[i]);
     }
+    // then load program starting at 0x200 
     const data = await fetch(path);
     const buffer = await data.arrayBuffer();
     const uint8 = new Uint8Array(buffer);
     for (let i = 0; i < uint8.byteLength; i++) {
       this.memory.setUint8(this.start + i, uint8[i]);
+    }
+  }
+
+  setMemory(byteOffset: number, numBytes: 1 | 2, value: number) {
+    if (numBytes === 1) {
+      this.memory.setUint8(byteOffset, value);
+    } else if (numBytes === 2) {
+      this.memory.setUint16(byteOffset, value);
     }
   }
 
@@ -251,6 +261,7 @@ export default class Chip8 {
 
   step() {
     const instruction = this.fetch();
+    console.log(instruction.toString(16)); // <-------- REMOVE THIS LATER
     const decodedInstruction = this.decode(instruction);
     this.execute(decodedInstruction);
   }
