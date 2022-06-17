@@ -1,13 +1,16 @@
 import Chip8 from "./chip8";
 import Display from "./display";
+import Options from "./options";
 
 export default class Controller {
   chip8: Chip8;
   display: Display;
+  options: Options;
 
   constructor() {
     this.chip8 = new Chip8();
     this.display = new Display();
+    this.options = new Options();
 
     // Bind callbacks
     this.chip8.bindClearScreen(this.clearScreen);
