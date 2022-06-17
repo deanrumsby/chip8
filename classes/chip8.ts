@@ -14,6 +14,7 @@ export default class Chip8 {
   delayTimer: number;
   soundTimer: number;
   instructionsPerSecond: number;
+  intervalID: NodeJS.Timer | null;
 
   constructor() {
     this.display = new Display();
@@ -32,6 +33,7 @@ export default class Chip8 {
     this.delayTimer = 0x00;
     this.soundTimer = 0x00;
     this.instructionsPerSecond = 700;
+    this.intervalID = null;
   }
 
   async load(path: string) {
@@ -60,6 +62,24 @@ export default class Chip8 {
     for (let i = 0; i < 4096; i += 2) {
       console.log(i.toString(16), this.memory.getUint16(i).toString(16));
     }
+  }
+
+  resetMemory() {
+    this.memory = new DataView(new ArrayBuffer(4096));
+  }
+
+  resetRegisters() {
+    for (let register of this.registers) {
+      register = 0x00;
+    }
+    this.I = 0x00;
+    this.PC = this.start;
+    this.delayTimer = 0x00;
+    this.soundTimer = 0x00;
+  }
+
+  resetStack() {
+    this.stack = new Uint16Array(16);
   }
 
   fetch() {
@@ -292,10 +312,22 @@ export default class Chip8 {
     const intervalID = setInterval(() => {
       this.step()
     }, 1000 / this.instructionsPerSecond);
-    return intervalID;
+    this.intervalID = intervalID;
   }
 
-  pause(intervalID: NodeJS.Timer) {
+  stop(intervalID: NodeJS.Timer | null) {
+    if (!intervalID) {
+      console.log("No process currently running");
+      return;
+    }
     clearInterval(intervalID);
+  }
+
+  reset() {
+    this.stop(this.intervalID);
+    this.display.clearScreen();
+    this.resetMemory();
+    this.resetRegisters();
+    this.resetStack();
   }
 }
