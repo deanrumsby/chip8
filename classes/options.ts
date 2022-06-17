@@ -49,4 +49,22 @@ export default class Options {
       handler(event);
     });
   }
+
+  bindRun(handler: Function) {
+    this.run.addEventListener('click', (event) => {
+      handler(event);
+    });
+  }
+
+  bindPause(handler: Function) {
+    this.pause.addEventListener('click', (event) => {
+      handler(event);
+    });
+  }
+
+  bindReset(handler: Function) {
+    this.reset.addEventListener('click', (event) => {
+      handler(event);
+    });
+  }
 }

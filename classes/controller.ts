@@ -17,6 +17,9 @@ export default class Controller {
     this.chip8.bindDrawSprite(this.drawSprite);
     this.options.bindLoad(this.handleLoad);
     this.options.bindStep(this.handleStep);
+    this.options.bindRun(this.handleRun);
+    this.options.bindPause(this.handlePause);
+    this.options.bindReset(this.handleReset);
   }
 
   clearScreen = () => {
@@ -34,5 +37,17 @@ export default class Controller {
 
   handleStep = (event: Event) => {
     this.chip8.step();
+  }
+
+  handleRun = (event: Event) => {
+    this.chip8.run();
+  }
+
+  handlePause = (event: Event) => {
+    this.chip8.stop(this.chip8.intervalID);
+  }
+
+  handleReset = (event: Event) => {
+    this.chip8.reset();
   }
 }

@@ -336,7 +336,6 @@ export default class Chip8 {
   reset() {
     this.stop(this.intervalID);
     this.clearScreen();
-    this.resetMemory();
     this.resetRegisters();
     this.resetStack();
   }
