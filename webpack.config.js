@@ -6,7 +6,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {from: "src/index.html"},
-        {from: "src/style.css"},
+        {from: "css/", to: "css/"},
         {from: "bin/", to: "bin/"},
       ],
     }),

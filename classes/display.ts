@@ -1,20 +1,28 @@
 export default class Display {
+  root: HTMLDivElement;
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D
-  width: number;
-  height: number;
   imageData: ImageData;
 
   constructor() {
-    this.canvas = document.querySelector('#display') as HTMLCanvasElement;
+    this.root = document.querySelector('#display') as HTMLDivElement;
+    this.canvas = this.createCanvas();
     this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
-    this.width = this.canvas.width;
-    this.height = this.canvas.height;
-    this.imageData = this.ctx.createImageData(this.width, this.height);
+    this.imageData = this.ctx.createImageData(this.canvas.width, this.canvas.height);
+
+    this.root.append(this.canvas);
+  }
+
+  createCanvas() {
+    const canvas = document.createElement('canvas');
+    canvas.classList.add('screen');
+    canvas.height = 32;
+    canvas.width = 64;
+    return canvas;
   }
 
   clearScreen() {
-    this.imageData = this.ctx.createImageData(this.width, this.height);
+    this.imageData = this.ctx.createImageData(this.canvas.width, this.canvas.height);
     this.ctx.putImageData(this.imageData, 0, 0);
   }
 

@@ -1,10 +1,6 @@
-body {
-    height: 95vh;
-}
-
-.display {
+.screen {
     outline: 1px solid black;
-    height: 50%;
+    height: 100%;
     aspect-ratio: 2 / 1;
     image-rendering: pixelated;
 }
