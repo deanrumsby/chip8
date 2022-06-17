@@ -40,7 +40,11 @@ export default class Options {
 
   bindLoad(handler: Function) {
     this.programSelect.addEventListener('change', (event) => {
-      handler(event, this.programSelect.value);
+      let name: string | null = this.programSelect.value;
+      if (name === 'Select a program') {
+        name = null;
+      }
+      handler(event, name);
     });
   }
 

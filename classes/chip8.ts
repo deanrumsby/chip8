@@ -339,4 +339,9 @@ export default class Chip8 {
     this.resetRegisters();
     this.resetStack();
   }
+
+  eject() {
+    this.reset();
+    this.resetMemory();
+  }
 }

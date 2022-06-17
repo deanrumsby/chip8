@@ -30,7 +30,11 @@ export default class Controller {
     this.display.drawSprite(x, y, sprite);
   }
 
-  handleLoad = (event: Event, name: string) => {
+  handleLoad = (event: Event, name: string | null) => {
+    if (!name) {
+      this.chip8.eject();
+      return;
+    }
     const path = "bin/" + name.toLowerCase().replace(" ", "-") + ".ch8";
     this.chip8.load(path);
   }
