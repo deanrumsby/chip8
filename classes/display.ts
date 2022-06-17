@@ -37,7 +37,6 @@ export default class Display {
   }
 
   drawSprite(x: number, y: number, sprite: Array<number>) {
-    console.log('From Display.ts', sprite);
     for (let i = 0; i < sprite.length; i++) {
       this.toggleByte(x, y + i, sprite[i]);      
     }

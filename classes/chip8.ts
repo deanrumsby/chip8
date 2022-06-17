@@ -252,7 +252,6 @@ export default class Chip8 {
           const byte = this.memory.getUint8(this.I + i);
           sprite.push(byte);
         }
-        console.log('from chip8.ts', sprite);
         this.drawSprite(x, y, sprite);
         break;
 

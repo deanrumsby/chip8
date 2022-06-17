@@ -19,7 +19,6 @@ export default class Controller {
   }
 
   drawSprite = (x:number, y: number, sprite: Array<number>) => {
-    console.log('From controller.ts', sprite);
     this.display.drawSprite(x, y, sprite);
   }
 }
