@@ -12,9 +12,10 @@ export default class Controller {
     this.display = new Display();
     this.options = new Options();
 
-    // Bind callbacks
+    // Bind callbacks and event handlers
     this.chip8.bindClearScreen(this.clearScreen);
     this.chip8.bindDrawSprite(this.drawSprite);
+    this.options.bindLoad(this.handleLoad);
   }
 
   clearScreen = () => {
@@ -23,5 +24,10 @@ export default class Controller {
 
   drawSprite = (x:number, y: number, sprite: Array<number>) => {
     this.display.drawSprite(x, y, sprite);
+  }
+
+  handleLoad = (event: Event, name: string) => {
+    const path = "bin/" + name.toLowerCase().replace(" ", "-") + ".ch8";
+    this.chip8.load(path);
   }
 }
