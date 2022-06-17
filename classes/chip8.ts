@@ -1,9 +1,7 @@
 import DecodedInstruction from "../interfaces/decoded-instruction";
-import Display from "./display";
 import { FONT } from "../data/font";
 
 export default class Chip8 {
-  display: Display;
   memory: DataView;
   stack: Uint16Array;
   start: number;
@@ -15,9 +13,10 @@ export default class Chip8 {
   soundTimer: number;
   instructionsPerSecond: number;
   intervalID: NodeJS.Timer | null;
+  clearScreen: Function;
+  drawSprite: Function;
 
   constructor() {
-    this.display = new Display();
     this.memory = new DataView(new ArrayBuffer(4096));
     this.stack = new Uint16Array(16);
     this.start = 0x200;
@@ -34,6 +33,16 @@ export default class Chip8 {
     this.soundTimer = 0x00;
     this.instructionsPerSecond = 700;
     this.intervalID = null;
+    this.clearScreen = () => {};
+    this.drawSprite = () => {};
+  }
+
+  bindClearScreen(callback: Function) {
+    this.clearScreen = callback;
+  }
+
+  bindDrawSprite(callback: Function) {
+    this.drawSprite = callback;
   }
 
   async load(path: string) {
@@ -107,7 +116,7 @@ export default class Chip8 {
           case 0x0:
             // 00E0: CLEAR SCREEN
             // Clears the display
-            this.display.clearScreen();
+            this.clearScreen();
             break;
           case 0xE:
             // RETURN FROM SUBROUTINE
@@ -238,11 +247,13 @@ export default class Chip8 {
         const x = this.registers[instruction.x] % 64;
         const y = this.registers[instruction.y] % 32;
         const height = instruction.n;
+        const sprite = [];
         for (let i = 0; i < height; i++) {
           const byte = this.memory.getUint8(this.I + i);
-          this.display.toggleByte(x, y + i, byte);
+          sprite.push(byte);
         }
-        this.display.draw();
+        console.log('from chip8.ts', sprite);
+        this.drawSprite(x, y, sprite);
         break;
 
       case 0xE:
@@ -325,7 +336,7 @@ export default class Chip8 {
 
   reset() {
     this.stop(this.intervalID);
-    this.display.clearScreen();
+    this.clearScreen();
     this.resetMemory();
     this.resetRegisters();
     this.resetStack();

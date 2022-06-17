@@ -15,14 +15,9 @@ export default class Display {
 
   clearScreen() {
     this.imageData = this.ctx.createImageData(this.width, this.height);
-    this.draw();
+    this.ctx.putImageData(this.imageData, 0, 0);
   }
 
-  // Offset by 4x + (4 * 64)y + 3
-  // + 4x because each pixel has 4 bytes (RGBA) asscociated with it
-  // + (4 * 64)y because to move down exactly 1 row we need to offset by
-  //   a further 64 pixels (each having 4 bytes)
-  // + 3 because we only target the alpha channel of each pixel. 
   togglePixel(x: number, y: number) {
     const offset = (4 * x) + (256 * y) + 3;
     const opacity = this.imageData.data[offset];
@@ -41,7 +36,11 @@ export default class Display {
     }
   }
 
-  draw() {
+  drawSprite(x: number, y: number, sprite: Array<number>) {
+    console.log('From Display.ts', sprite);
+    for (let i = 0; i < sprite.length; i++) {
+      this.toggleByte(x, y + i, sprite[i]);      
+    }
     this.ctx.putImageData(this.imageData, 0, 0);
   }
 }

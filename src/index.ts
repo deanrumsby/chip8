@@ -1,3 +1,3 @@
-import Chip8 from '../classes/chip8';
+import Controller from '../classes/controller';
 
-(window as any).chip8 = new Chip8();
+(window as any).chip8 = new Controller();
