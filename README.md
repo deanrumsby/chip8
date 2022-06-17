@@ -1,11 +1,13 @@
 # chip8
-A chip8 interpreter written in TypeScript
+A Chip8 interpreter written in TypeScript
 
 ## Learning objectives: 
 - To use TypeScript in a project
 - Configuring Jest for TypeScript.
 - Using Webpack to bundle production files
 - To learn more about emulation and how to implement it.
+- Using JavaScript ArrayBuffer objects to handle binary data.
+- To understand how to build useful debugging tools for software.
 - To practice using the HTML Canvas API.
 - Using ES Modules.
 
