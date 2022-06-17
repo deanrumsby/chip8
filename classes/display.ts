@@ -18,10 +18,12 @@ export default class Display {
     this.draw();
   }
 
-  // TO-DO: Magic numbers to be made explicit
-  // offset by 4x + (64 * 4)((31 - y)
+  // Offset by 4x + (4 * 64)y + 3
+  // + 4x because each pixel has 4 bytes (RGBA) asscociated with it
+  // + (4 * 64)y because to move down exactly 1 row we need to offset by
+  //   a further 64 pixels (each having 4 bytes)
+  // + 3 because we only target the alpha channel of each pixel. 
   togglePixel(x: number, y: number) {
-    //const offset = (4 * x) - (256 * y) + 7936 + 3;
     const offset = (4 * x) + (256 * y) + 3;
     const opacity = this.imageData.data[offset];
     const newOpacity = 255 - opacity;
