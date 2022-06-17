@@ -43,4 +43,10 @@ export default class Options {
       handler(event, this.programSelect.value);
     });
   }
+
+  bindStep(handler: Function) {
+    this.step.addEventListener('click', (event) => {
+      handler(event);
+    });
+  }
 }

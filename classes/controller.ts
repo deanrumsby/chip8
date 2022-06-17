@@ -16,6 +16,7 @@ export default class Controller {
     this.chip8.bindClearScreen(this.clearScreen);
     this.chip8.bindDrawSprite(this.drawSprite);
     this.options.bindLoad(this.handleLoad);
+    this.options.bindStep(this.handleStep);
   }
 
   clearScreen = () => {
@@ -29,5 +30,9 @@ export default class Controller {
   handleLoad = (event: Event, name: string) => {
     const path = "bin/" + name.toLowerCase().replace(" ", "-") + ".ch8";
     this.chip8.load(path);
+  }
+
+  handleStep = (event: Event) => {
+    this.chip8.step();
   }
 }
