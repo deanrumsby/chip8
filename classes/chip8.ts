@@ -312,6 +312,9 @@ export default class Chip8 {
   }
 
   step() {
+    if (this.PC === this.end) {
+      return;
+    }
     const instruction = this.fetch();
     console.log(instruction.toString(16)); // <-------- REMOVE THIS LATER
     const decodedInstruction = this.decode(instruction);
@@ -321,6 +324,9 @@ export default class Chip8 {
   run() {
     const intervalID = setInterval(() => {
       this.step()
+      if (this.PC === this.end) {
+        clearInterval(intervalID);
+      }
     }, 1000 / this.instructionsPerSecond);
     this.intervalID = intervalID;
   }
