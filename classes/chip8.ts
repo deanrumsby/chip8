@@ -289,8 +289,13 @@ export default class Chip8 {
   }
 
   run() {
-    setInterval(() => {
+    const intervalID = setInterval(() => {
       this.step()
     }, 1000 / this.instructionsPerSecond);
+    return intervalID;
+  }
+
+  pause(intervalID: NodeJS.Timer) {
+    clearInterval(intervalID);
   }
 }
