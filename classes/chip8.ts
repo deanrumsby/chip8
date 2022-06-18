@@ -181,12 +181,15 @@ export default class Chip8 {
             break;
 
           case 0x1:
-            // VX |= VY
+            // 8XY1: BINARY OR
+            // Sets VX |= VY
             this.registers[instruction.x] |= this.registers[instruction.y];
             break;
 
           case 0x2:
-            // VX &= VY
+            // 8XY2: BINARY AND
+            // Sets VX &= VY
+            this.registers[instruction.x] &= this.registers[instruction.y];
             break;
 
           case 0x3:
