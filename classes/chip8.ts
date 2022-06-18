@@ -269,7 +269,10 @@ export default class Chip8 {
         break;
 
       case 0xC:
-        // GENERATE RANDOM NUMBER 'R', THEN VX = R & NN
+        // CXNN: RND VX, NN
+        // For random number R, sets VX = R & NN
+        const r = Math.floor(Math.random() * 0x100);
+        this.registers[instruction.x] = r & instruction.nn;
         break;
 
       case 0xD:
