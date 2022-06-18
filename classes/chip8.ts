@@ -4,8 +4,8 @@ import { FONT } from "../data/font";
 export default class Chip8 {
   memory: DataView;
   stack: Uint16Array;
-  start: number;
-  end: number;
+  progStart: number;
+  progEnd: number;
   fontStart: number;
   PC: number;
   I: number;
@@ -20,10 +20,10 @@ export default class Chip8 {
   constructor() {
     this.memory = new DataView(new ArrayBuffer(4096));
     this.stack = new Uint16Array(16);
-    this.start = 0x200;
-    this.end = 0x1000;
+    this.progStart = 0x200;
+    this.progEnd = 0x1000;
     this.fontStart = 0x50;
-    this.PC = this.start;
+    this.PC = this.progStart;
     this.I = 0x00;
     this.registers = [
       0x00, 0x00, 0x00, 0x00,
@@ -55,7 +55,7 @@ export default class Chip8 {
     const buffer = await data.arrayBuffer();
     const uint8 = new Uint8Array(buffer);
     for (let i = 0; i < uint8.byteLength; i++) {
-      this.memory.setUint8(this.start + i, uint8[i]);
+      this.memory.setUint8(this.progStart + i, uint8[i]);
     }
   }
 
@@ -82,7 +82,7 @@ export default class Chip8 {
       register = 0x00;
     }
     this.I = 0x00;
-    this.PC = this.start;
+    this.PC = this.progStart;
     this.delayTimer = 0x00;
     this.soundTimer = 0x00;
   }
@@ -312,7 +312,7 @@ export default class Chip8 {
   }
 
   step() {
-    if (this.PC === this.end) {
+    if (this.PC === this.progEnd) {
       return;
     }
     const instruction = this.fetch();
