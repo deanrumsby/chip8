@@ -249,4 +249,30 @@ describe('execute', () => {
     chip8.execute(instruction);
     expect(chip8.registers[instruction.x]).toBe(0x1E);
   });
+
+  test('8XY4 - no overflow', () => {
+    // 0x81A4
+    instruction = {
+      type: 0x8, nnn: 0x1A4, nn: 0xA4,
+      n: 0x4, x: 0x1, y: 0xA
+    }
+    chip8.registers[instruction.x] = 0x22;
+    chip8.registers[instruction.y] = 0x3E;
+    chip8.execute(instruction)
+    const result = [chip8.registers[instruction.x], chip8.registers[0xF]];
+    expect(result).toEqual([0x60, 0]);
+  });
+
+  test('8XY4 - with overflow', () => {
+    // 0x81A4
+    instruction = {
+      type: 0x8, nnn: 0x1A4, nn: 0xA4,
+      n: 0x4, x: 0x1, y: 0xA
+    }
+    chip8.registers[instruction.x] = 0xFF;
+    chip8.registers[instruction.y] = 0x3E;
+    chip8.execute(instruction)
+    const result = [chip8.registers[instruction.x], chip8.registers[0xF]];
+    expect(result).toEqual([0x3D, 1]);
+  });
 });

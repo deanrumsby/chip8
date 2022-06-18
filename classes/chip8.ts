@@ -199,7 +199,14 @@ export default class Chip8 {
             break;
 
           case 0x4:
-            // VX += VY (WITH OVERFLOW VF FLAG)
+            // 8XY4: ADD
+            // Sets VX += VY
+            // In the event of an overflow, sets VF = 1
+            this.registers[instruction.x] += this.registers[instruction.y];
+            if (this.registers[instruction.x] > 0xFF) {
+              this.registers[instruction.x] %= 0x100;
+              this.registers[0xF] = 1;
+            }
             break;
 
           case 0x5:
