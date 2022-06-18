@@ -48,6 +48,7 @@ export default class Chip8 {
   }
 
   async load(path: string) {
+    this.reset();
     for (let i = 0; i < FONT.length; i++) {
       this.memory.setUint8(this.fontStart + i, FONT[i]);
     }
@@ -350,7 +351,7 @@ export default class Chip8 {
   }
 
   reset() {
-    //this.stop(this.intervalID);
+    this.stop();
     this.clearScreen();
     this.resetRegisters();
     this.resetStack();
