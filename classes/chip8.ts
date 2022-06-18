@@ -181,19 +181,21 @@ export default class Chip8 {
             break;
 
           case 0x1:
-            // 8XY1: BINARY OR
+            // 8XY1: BITWISE OR
             // Sets VX |= VY
             this.registers[instruction.x] |= this.registers[instruction.y];
             break;
 
           case 0x2:
-            // 8XY2: BINARY AND
+            // 8XY2: BITWISE AND
             // Sets VX &= VY
             this.registers[instruction.x] &= this.registers[instruction.y];
             break;
 
           case 0x3:
-            // VX ^= VY
+            // 8XY3: BITWISE XOR
+            // Sets VX ^= VY
+            this.registers[instruction.x] ^= this.registers[instruction.y];
             break;
 
           case 0x4:
