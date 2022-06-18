@@ -229,7 +229,16 @@ export default class Chip8 {
             break;
 
           case 0x7:
-            // VX = VY - VX (AFFECTS FLAG)
+            // 8XY7: SUBTRACT
+            // Sets VX = VY - VX
+            // In the event of an underflow, keeps VF = 0; else VF = 1
+            const result = this.registers[instruction.y] - this.registers[instruction.x];
+            this.registers[instruction.x] = result;
+            this.registers[0xF] = 1;
+            if (this.registers[instruction.x] < 0x00) {
+              this.registers[instruction.x] += 0x100;
+              this.registers[0xF] = 0;
+            }
             break;
 
           case 0xE:
