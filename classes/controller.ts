@@ -48,7 +48,7 @@ export default class Controller {
   }
 
   handlePause = (event: Event) => {
-    this.chip8.stop(this.chip8.intervalID);
+    this.chip8.stop();
   }
 
   handleReset = (event: Event) => {

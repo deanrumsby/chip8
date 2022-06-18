@@ -11,8 +11,9 @@ export default class Chip8 {
   registers: Array<number>
   delayTimer: number;
   soundTimer: number;
-  instructionsPerSecond: number;
-  intervalID: NodeJS.Timer | null;
+  running: boolean;
+  cycles: number;
+  instructsPerSecond: number;
   clearScreen: Function;
   drawSprite: Function;
 
@@ -31,8 +32,9 @@ export default class Chip8 {
     ];
     this.delayTimer = 0x00;
     this.soundTimer = 0x00;
-    this.instructionsPerSecond = 700;
-    this.intervalID = null;
+    this.running = false;
+    this.cycles = 0;
+    this.instructsPerSecond = 700;
     this.clearScreen = () => {};
     this.drawSprite = () => {};
   }
@@ -321,26 +323,36 @@ export default class Chip8 {
     this.execute(decodedInstruction);
   }
 
-  run() {
-    const intervalID = setInterval(() => {
-      this.step()
-      if (this.PC === this.end) {
-        clearInterval(intervalID);
-      }
-    }, 1000 / this.instructionsPerSecond);
-    this.intervalID = intervalID;
+  sleep(milliseconds: number) {
+    return new Promise((resolve: Function) => {
+      setTimeout(() => resolve(), milliseconds);
+    });
   }
 
-  stop(intervalID: NodeJS.Timer | null) {
-    if (!intervalID) {
-      console.log("No process currently running");
-      return;
+  async run() {
+    this.running = true;
+    let startTime = performance.now();
+    this.cycles = 0;
+    while (this.running) {
+      if (this.cycles === this.instructsPerSecond) {
+        const endTime = performance.now();
+        const sleepTime = 1000 - (endTime - startTime);
+        console.log(sleepTime);
+        await this.sleep(sleepTime);
+        this.cycles = 0;
+        startTime = performance.now();
+      }
+      this.step();
+      this.cycles++;
     }
-    clearInterval(intervalID);
+  }
+
+  stop() {
+    this.running = false;
   }
 
   reset() {
-    this.stop(this.intervalID);
+    //this.stop(this.intervalID);
     this.clearScreen();
     this.resetRegisters();
     this.resetStack();
