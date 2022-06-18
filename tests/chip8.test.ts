@@ -275,4 +275,30 @@ describe('execute', () => {
     const result = [chip8.registers[instruction.x], chip8.registers[0xF]];
     expect(result).toEqual([0x3D, 1]);
   });
+
+  test('8XY5 - no underflow', () => {
+    // 0x8CB5
+    instruction = {
+      type: 0x8, nnn: 0xCB5, nn: 0xB5,
+      n: 0x5, x: 0xC, y: 0xB
+    }
+    chip8.registers[instruction.x] = 0x0A;
+    chip8.registers[instruction.y] = 0x02;
+    chip8.execute(instruction)
+    const result = [chip8.registers[instruction.x], chip8.registers[0xF]];
+    expect(result).toEqual([0x08, 1]);
+  });
+
+  test('8XY5 - with underflow', () => {
+    // 0x8CB5
+    instruction = {
+      type: 0x8, nnn: 0xCB5, nn: 0xB5,
+      n: 0x5, x: 0xC, y: 0xB
+    }
+    chip8.registers[instruction.x] = 0x01;
+    chip8.registers[instruction.y] = 0x05;
+    chip8.execute(instruction)
+    const result = [chip8.registers[instruction.x], chip8.registers[0xF]];
+    expect(result).toEqual([0xFC, 0]);
+  });
 });

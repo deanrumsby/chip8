@@ -204,13 +204,21 @@ export default class Chip8 {
             // In the event of an overflow, sets VF = 1
             this.registers[instruction.x] += this.registers[instruction.y];
             if (this.registers[instruction.x] > 0xFF) {
-              this.registers[instruction.x] %= 0x100;
+              this.registers[instruction.x] -= 0x100;
               this.registers[0xF] = 1;
             }
             break;
 
           case 0x5:
-            // VX -= VY (AFFECTS VF FLAG)
+            // 8XY5: SUBTRACT
+            // Sets VX -= VY
+            // In the event of an underflow, keeps VF = 0; else VF = 1
+            this.registers[instruction.x] -= this.registers[instruction.y];
+            this.registers[0xF] = 1;
+            if (this.registers[instruction.x] < 0x00) {
+              this.registers[instruction.x] += 0x100;
+              this.registers[0xF] = 0;
+            }
             break;
 
           case 0x6:
