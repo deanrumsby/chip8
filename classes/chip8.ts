@@ -115,7 +115,7 @@ export default class Chip8 {
       case 0x0:
         switch (instruction.nnn) {
           case 0x0E0:
-            // 00E0: CLEAR SCREEN
+            // 00E0: CLS
             // Clears the display
             this.clearScreen();
             break;
@@ -126,7 +126,7 @@ export default class Chip8 {
         break;
 
       case 0x1:
-        // 1NNN: JUMP
+        // 1NNN: JMP NNN
         // Jumps the program counter to instruction NNN
         this.PC = instruction.nnn;
         break;
@@ -136,7 +136,7 @@ export default class Chip8 {
         break;
 
       case 0x3:
-        // 3XNN: SKIP
+        // 3XNN: SE VX, NN
         // Skips the next instruction if VX === NN
         if (this.registers[instruction.x] === instruction.nn) {
           this.PC += 2;
@@ -144,7 +144,7 @@ export default class Chip8 {
         break;
 
       case 0x4:
-        // 4XNN: SKIP
+        // 4XNN: SNE VX, NN
         // Skips the next instruction if VX !== NN
         if (this.registers[instruction.x] !== instruction.nn) {
           this.PC += 2;
@@ -152,7 +152,7 @@ export default class Chip8 {
         break;
 
       case 0x5:
-        // 5XY0: SKIP
+        // 5XY0: SE VX, VY
         // Skips the next instruction if VX === VY
         if (this.registers[instruction.x] === this.registers[instruction.y]) {
           this.PC += 2;
@@ -160,13 +160,13 @@ export default class Chip8 {
         break;
 
       case 0x6:
-        // 6XNN: SET
+        // 6XNN: LD VX, NN
         // Sets VX = NN
         this.registers[instruction.x] = instruction.nn;
         break;
 
       case 0x7:
-        // 7XNN: ADD
+        // 7XNN: ADD VX, NN
         // Sets VX += NN
         // No flag set on overflow
         this.registers[instruction.x] += instruction.nn;
@@ -175,31 +175,31 @@ export default class Chip8 {
       case 0x8:
         switch (instruction.n) {
           case 0x0:
-            // 8XY0: SET
+            // 8XY0: LD VX, VY
             // Sets VX = VY
             this.registers[instruction.x] = this.registers[instruction.y];
             break;
 
           case 0x1:
-            // 8XY1: BITWISE OR
+            // 8XY1: OR VX, VY
             // Sets VX |= VY
             this.registers[instruction.x] |= this.registers[instruction.y];
             break;
 
           case 0x2:
-            // 8XY2: BITWISE AND
+            // 8XY2: AND VX, VY
             // Sets VX &= VY
             this.registers[instruction.x] &= this.registers[instruction.y];
             break;
 
           case 0x3:
-            // 8XY3: BITWISE XOR
+            // 8XY3: XOR VX, VY
             // Sets VX ^= VY
             this.registers[instruction.x] ^= this.registers[instruction.y];
             break;
 
           case 0x4:
-            // 8XY4: ADD
+            // 8XY4: ADD VX, VY
             // Sets VX += VY
             // In the event of an overflow, sets VF = 1
             this.registers[instruction.x] += this.registers[instruction.y];
@@ -210,7 +210,7 @@ export default class Chip8 {
             break;
 
           case 0x5:
-            // 8XY5: SUBTRACT
+            // 8XY5: SUB VX, VY
             // Sets VX -= VY
             // In the event of an underflow, keeps VF = 0; else VF = 1
             this.registers[instruction.x] -= this.registers[instruction.y];
@@ -229,7 +229,7 @@ export default class Chip8 {
             break;
 
           case 0x7:
-            // 8XY7: SUBTRACT
+            // 8XY7: SUBN VX, VY 
             // Sets VX = VY - VX
             // In the event of an underflow, keeps VF = 0; else VF = 1
             const result = this.registers[instruction.y] - this.registers[instruction.x];
@@ -250,7 +250,7 @@ export default class Chip8 {
         }
       
       case 0x9:
-        // 9XY0: SKIP
+        // 9XY0: SNE VX, VY
         // Skips the next instruction if VX !== VY
         if (this.registers[instruction.x] !== this.registers[instruction.y]) {
           this.PC += 2;
@@ -258,7 +258,7 @@ export default class Chip8 {
         break;
 
       case 0xA:
-        // ANNN: SET INDEX
+        // ANNN: LD I, NNN
         // Sets I = NNN
         this.I = instruction.nnn;
         break;
@@ -273,7 +273,7 @@ export default class Chip8 {
         break;
 
       case 0xD:
-        // DXYN: DISPLAY
+        // DXYN: DRW VX, VY, N
         // Draws a sprite N tall at location X, Y on the display
         const x = this.registers[instruction.x] % 64;
         const y = this.registers[instruction.y] % 32;
