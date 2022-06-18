@@ -113,13 +113,13 @@ export default class Chip8 {
   execute(instruction: DecodedInstruction) {
     switch (instruction.type) {
       case 0x0:
-        switch (instruction.n) {
-          case 0x0:
+        switch (instruction.nnn) {
+          case 0x0E0:
             // 00E0: CLEAR SCREEN
             // Clears the display
             this.clearScreen();
             break;
-          case 0xE:
+          case 0x0EE:
             // RETURN FROM SUBROUTINE
             break;
         }
