@@ -75,7 +75,7 @@ describe('execute', () => {
     instruction = {
       type: 0x1, nnn: 0x2A3, nn: 0xA3,
       n: 0x3, x: 0x2, y: 0xA
-    }
+    };
     chip8.execute(instruction);
     expect(chip8.PC).toBe(0x02A3);
   });
@@ -85,7 +85,7 @@ describe('execute', () => {
     instruction = {
       type: 0x6, nnn: 0xE34, nn: 0x34,
       n: 0x4, x: 0xE, y: 0x3
-    }
+    };
     chip8.execute(instruction);
     expect(chip8.registers[0xE]).toBe(0x0034);
   });
@@ -95,7 +95,7 @@ describe('execute', () => {
     instruction = {
       type: 0x7, nnn: 0x29A, nn: 0x9A,
       n: 0xA, x: 0x2, y: 0x9
-    }
+    };
     chip8.registers[0x2] = 0x05;
     chip8.execute(instruction);
     expect(chip8.registers[0x2]).toBe(0x9F);
@@ -106,7 +106,7 @@ describe('execute', () => {
     instruction = {
       type: 0xA, nnn: 0x232, nn: 0x32,
       n: 0x2, x: 0x2, y: 0x3
-    }
+    };
     chip8.execute(instruction);
     expect(chip8.I).toBe(0x232);
   });
@@ -116,7 +116,7 @@ describe('execute', () => {
     instruction = {
       type: 0x3, nnn: 0x512, nn: 0x12,
       n: 0x2, x: 0x5, y: 0x1
-    }
+    };
     chip8.registers[instruction.x] = 0x12;
     chip8.execute(instruction);
     expect(chip8.PC).toBe(0x202);
@@ -127,7 +127,7 @@ describe('execute', () => {
     instruction = {
       type: 0x3, nnn: 0x512, nn: 0x12,
       n: 0x2, x: 0x5, y: 0x1
-    }
+    };
     chip8.registers[instruction.x] = 0x10;
     chip8.execute(instruction);
     expect(chip8.PC).toBe(0x200);
@@ -138,7 +138,7 @@ describe('execute', () => {
     instruction = {
       type: 0x4, nnn: 0x6FA, nn: 0xFA,
       n: 0xA, x: 0x6, y: 0xF
-    }
+    };
     chip8.registers[instruction.x] = 0x10;
     chip8.execute(instruction);
     expect(chip8.PC).toBe(0x202);
@@ -149,7 +149,7 @@ describe('execute', () => {
     instruction = {
       type: 0x4, nnn: 0x6FA, nn: 0xFA,
       n: 0xA, x: 0x6, y: 0xF
-    }
+    };
     chip8.registers[instruction.x] = 0xFA;
     chip8.execute(instruction);
     expect(chip8.PC).toBe(0x200);
@@ -160,7 +160,7 @@ describe('execute', () => {
     instruction = {
       type: 0x5, nnn: 0x2A0, nn: 0xA0,
       n: 0x0, x: 0x2, y: 0xA
-    }
+    };
     chip8.registers[instruction.x] = 0xEE;
     chip8.registers[instruction.y] = 0xEE;
     chip8.execute(instruction);
@@ -172,7 +172,7 @@ describe('execute', () => {
     instruction = {
       type: 0x5, nnn: 0x2A0, nn: 0xA0,
       n: 0x0, x: 0x2, y: 0xA
-    }
+    };
     chip8.registers[instruction.x] = 0xF9;
     chip8.registers[instruction.y] = 0xEE;
     chip8.execute(instruction);
@@ -184,7 +184,7 @@ describe('execute', () => {
     instruction = {
       type: 0x9, nnn: 0xE000, nn: 0x00,
       n: 0x0, x: 0xE, y: 0x0
-    }
+    };
     chip8.registers[instruction.x] = 0x03;
     chip8.registers[instruction.y] = 0x07;
     chip8.execute(instruction);
@@ -196,7 +196,7 @@ describe('execute', () => {
     instruction = {
       type: 0x9, nnn: 0xE000, nn: 0x00,
       n: 0x0, x: 0xE, y: 0x0
-    }
+    };
     chip8.registers[instruction.x] = 0x07;
     chip8.registers[instruction.y] = 0x07;
     chip8.execute(instruction);
@@ -208,7 +208,7 @@ describe('execute', () => {
     instruction = {
       type: 0x8, nnn: 0x160, nn: 0x60,
       n: 0x0, x: 0x1, y: 0x6
-    }
+    };
     chip8.registers[instruction.y] = 0x23;
     chip8.execute(instruction);
     expect(chip8.registers[instruction.x]).toBe(0x23);
@@ -219,7 +219,7 @@ describe('execute', () => {
     instruction = {
       type: 0x8, nnn: 0x2E1, nn: 0xE1,
       n: 0x1, x: 0x2, y: 0xE
-    }
+    };
     chip8.registers[instruction.x] = 0x1F;
     chip8.registers[instruction.y] = 0x21;
     chip8.execute(instruction);
@@ -231,7 +231,7 @@ describe('execute', () => {
     instruction = {
       type: 0x8, nnn: 0xE62, nn: 0x62,
       n: 0x2, x: 0xE, y: 0x6
-    }
+    };
     chip8.registers[instruction.x] = 0xA2;
     chip8.registers[instruction.y] = 0x58;
     chip8.execute(instruction);
@@ -243,7 +243,7 @@ describe('execute', () => {
     instruction = {
       type: 0x8, nnn: 0x243, nn: 0x43,
       n: 0x3, x: 0x2, y: 0x4
-    }
+    };
     chip8.registers[instruction.x] = 0x51;
     chip8.registers[instruction.y] = 0x4F;
     chip8.execute(instruction);
@@ -255,7 +255,7 @@ describe('execute', () => {
     instruction = {
       type: 0x8, nnn: 0x1A4, nn: 0xA4,
       n: 0x4, x: 0x1, y: 0xA
-    }
+    };
     chip8.registers[instruction.x] = 0x22;
     chip8.registers[instruction.y] = 0x3E;
     chip8.execute(instruction)
@@ -268,7 +268,7 @@ describe('execute', () => {
     instruction = {
       type: 0x8, nnn: 0x1A4, nn: 0xA4,
       n: 0x4, x: 0x1, y: 0xA
-    }
+    };
     chip8.registers[instruction.x] = 0xFF;
     chip8.registers[instruction.y] = 0x3E;
     chip8.execute(instruction)
@@ -281,7 +281,7 @@ describe('execute', () => {
     instruction = {
       type: 0x8, nnn: 0xCB5, nn: 0xB5,
       n: 0x5, x: 0xC, y: 0xB
-    }
+    };
     chip8.registers[instruction.x] = 0x0A;
     chip8.registers[instruction.y] = 0x02;
     chip8.execute(instruction)
@@ -294,7 +294,7 @@ describe('execute', () => {
     instruction = {
       type: 0x8, nnn: 0xCB5, nn: 0xB5,
       n: 0x5, x: 0xC, y: 0xB
-    }
+    };
     chip8.registers[instruction.x] = 0x01;
     chip8.registers[instruction.y] = 0x05;
     chip8.execute(instruction)
@@ -307,7 +307,7 @@ describe('execute', () => {
     instruction = {
       type: 0x8, nnn: 0xA07, nn: 0x07,
       n: 0x7, x: 0xA, y: 0x0
-    }
+    };
     chip8.registers[instruction.x] = 0x0E;
     chip8.registers[instruction.y] = 0x1F;
     chip8.execute(instruction)
@@ -320,7 +320,7 @@ describe('execute', () => {
     instruction = {
       type: 0x8, nnn: 0xA07, nn: 0x07,
       n: 0x7, x: 0xA, y: 0x0
-    }
+    };
     chip8.registers[instruction.x] = 0x31;
     chip8.registers[instruction.y] = 0x21;
     chip8.execute(instruction)
@@ -333,9 +333,20 @@ describe('execute', () => {
     instruction = {
       type: 0xF, nnn: 0x207, nn: 0x07,
       n: 0x7, x: 0x2, y: 0x0
-    }
+    };
     chip8.delayTimer = 0x12;
     chip8.execute(instruction);
     expect(chip8.registers[instruction.x]).toBe(0x12);
+  });
+
+  test('FX15', () => {
+    // 0xF715
+    instruction = {
+      type: 0xF, nnn: 0x715, nn: 0x15,
+      n: 0x5, x: 0x7, y: 0x1
+    };
+    chip8.registers[instruction.x] = 0xAA;
+    chip8.execute(instruction);
+    expect(chip8.delayTimer).toBe(0xAA);
   });
 });

@@ -306,7 +306,7 @@ export default class Chip8 {
         switch (instruction.nn) {
           case 0x07:
             // FX07: LD VX, DT
-            // Set VX = DelayTimer
+            // Set VX = DT
             this.registers[instruction.x] = this.delayTimer;
             break;
 
@@ -315,7 +315,9 @@ export default class Chip8 {
             break;
 
           case 0x15:
-            // SETS DELAY TIMER TO VALUE OF VX
+            // FX15: LD DT, VX
+            // Set DT = VX
+            this.delayTimer = this.registers[instruction.x];
             break;
 
           case 0x18:
