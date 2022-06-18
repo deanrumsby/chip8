@@ -6,6 +6,7 @@ export default class Chip8 {
   stack: Uint16Array;
   start: number;
   end: number;
+  fontStart: number;
   PC: number;
   I: number;
   registers: Array<number>
@@ -21,6 +22,7 @@ export default class Chip8 {
     this.stack = new Uint16Array(16);
     this.start = 0x200;
     this.end = 0x1000;
+    this.fontStart = 0x50;
     this.PC = this.start;
     this.I = 0x00;
     this.registers = [
@@ -46,11 +48,9 @@ export default class Chip8 {
   }
 
   async load(path: string) {
-    // first load font into memory 0x50 - 0x9F
     for (let i = 0; i < FONT.length; i++) {
-      this.memory.setUint8(0x50 + i, FONT[i]);
+      this.memory.setUint8(this.fontStart + i, FONT[i]);
     }
-    // then load program starting at 0x200 
     const data = await fetch(path);
     const buffer = await data.arrayBuffer();
     const uint8 = new Uint8Array(buffer);
