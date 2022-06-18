@@ -182,6 +182,7 @@ export default class Chip8 {
 
           case 0x1:
             // VX |= VY
+            this.registers[instruction.x] |= this.registers[instruction.y];
             break;
 
           case 0x2:

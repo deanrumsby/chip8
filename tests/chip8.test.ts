@@ -213,4 +213,16 @@ describe('execute', () => {
     chip8.execute(instruction);
     expect(chip8.registers[instruction.x]).toBe(0x23);
   });
+
+  test('8XY1', () => {
+    // 0x82E1
+    instruction = {
+      type: 0x8, nnn: 0x2E1, nn: 0xE1,
+      n: 0x1, x: 0x2, y: 0xE
+    }
+    chip8.registers[instruction.x] = 0x1F;
+    chip8.registers[instruction.y] = 0x21;
+    chip8.execute(instruction);
+    expect(chip8.registers[instruction.x]).toBe(0x3F);
+  });
 });
