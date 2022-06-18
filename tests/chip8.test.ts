@@ -327,4 +327,15 @@ describe('execute', () => {
     const result = [chip8.registers[instruction.x], chip8.registers[0xF]];
     expect(result).toEqual([0xF0, 0]);
   });
+
+  test('FX07', () => {
+    // 0xF207
+    instruction = {
+      type: 0xF, nnn: 0x207, nn: 0x07,
+      n: 0x7, x: 0x2, y: 0x0
+    }
+    chip8.delayTimer = 0x12;
+    chip8.execute(instruction);
+    expect(chip8.registers[instruction.x]).toBe(0x12);
+  });
 });
