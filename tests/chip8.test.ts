@@ -349,4 +349,15 @@ describe('execute', () => {
     chip8.execute(instruction);
     expect(chip8.delayTimer).toBe(0xAA);
   });
+
+  test('FX18', () => {
+    // 0xFB18
+    instruction = {
+      type: 0xF, nnn: 0xB18, nn: 0x18,
+      n: 0x8, x: 0xB, y: 0x1
+    };
+    chip8.registers[instruction.x] = 0xF1;
+    chip8.execute(instruction);
+    expect(chip8.soundTimer).toBe(0xF1);
+  });
 });

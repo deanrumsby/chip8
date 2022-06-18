@@ -321,7 +321,9 @@ export default class Chip8 {
             break;
 
           case 0x18:
-            // SETS THE SOUND TIMER TO VALUE IN VX
+            // FX18: LD ST, VX
+            // Set ST = VX
+            this.soundTimer = this.registers[instruction.x];
             break;
 
           case 0x1E:
