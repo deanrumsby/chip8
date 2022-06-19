@@ -360,4 +360,30 @@ describe('execute', () => {
     chip8.execute(instruction);
     expect(chip8.soundTimer).toBe(0xF1);
   });
+
+  test('FX1E - result < 0x1000', () => {
+    // 0xF71E
+    instruction = {
+      type: 0xF, nnn: 0x71E, nn: 0x1E,
+      n: 0xE, x: 0x7, y: 0x1
+    };
+    chip8.I = 0x0035;
+    chip8.registers[instruction.x] = 0xF1;
+    chip8.execute(instruction);
+    const result = [chip8.I, chip8.registers[0xF]];
+    expect(result).toEqual([0x0126, 0x00]);
+  });
+
+  test('FX1E - result >= 0x1000', () => {
+    // 0xF71E
+    instruction = {
+      type: 0xF, nnn: 0x71E, nn: 0x1E,
+      n: 0xE, x: 0x7, y: 0x1
+    };
+    chip8.I = 0x0FFF;
+    chip8.registers[instruction.x] = 0x05;
+    chip8.execute(instruction);
+    const result = [chip8.I, chip8.registers[0xF]];
+    expect(result).toEqual([0x1004, 0x01]);
+  });
 });

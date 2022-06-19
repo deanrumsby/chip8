@@ -127,7 +127,7 @@ export default class Chip8 {
 
       case 0x1:
         // 1NNN: JMP NNN
-        // Jumps the program counter to instruction NNN
+        // Jumps the program counter to value NNN
         this.PC = instruction.nnn;
         break;
 
@@ -327,7 +327,13 @@ export default class Chip8 {
             break;
 
           case 0x1E:
-            // SET I += VX (AFFECTS OVERFLOW FLAG)
+            // FX1E: ADD I, VX
+            // Set I = I + VX
+            // After addition, if I >= 0x1000 then set VF = 1
+            this.I += this.registers[instruction.x];
+            if (this.I >= 0x1000) {
+              this.registers[0xF] = 1;
+            }
             break;
 
           case 0x29:
