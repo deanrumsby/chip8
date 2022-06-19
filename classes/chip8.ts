@@ -299,13 +299,13 @@ export default class Chip8 {
         break;
 
       case 0xE:
-        switch (instruction.n) {
-          case 0x1:
+        switch (instruction.nn) {
+          case 0xA1:
             // SKIP INSTRUCTION IF BUTTON WITH VALUE VX NOT 
             // CURRENTLY PRESSED DOWN
             break;
 
-          case 0xE:
+          case 0x9E:
             // SKIP INSTRUCTION IF BUTTON WITH VALUE VX IS 
             // CURRENTLY PRESSED DOWN
             break;
@@ -352,8 +352,13 @@ export default class Chip8 {
             break;
 
           case 0x33:
-            // BINARY CODED DECIMAL CONVERSION -
-            // SEE DOCS
+            // FX33: LD B, VX
+            // Stores the decimal value of VX in memory I, I + 1, I + 2
+            // One decimal digit in each address space
+            for (let i = 0; i < 3; i++) {
+              const digit = Math.floor(this.registers[instruction.x] / (10 ** (2 - i))) % 10;
+              this.setMemory(this.I + i, 1, digit);
+            }
             break;
 
           case 0x55:

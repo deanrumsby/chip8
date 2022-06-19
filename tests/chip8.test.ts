@@ -421,4 +421,20 @@ describe('execute', () => {
     const result = [chip8.PC, chip8.SP];
     expect(result).toEqual([0x244, 0x4]);
   });
+
+  test('FX33', () => {
+    // 0xFC33
+    instruction = {
+      type: 0xF, nnn: 0xC33, nn: 0x33,
+      n: 0x3, x: 0xC, y: 0x3
+    };
+    chip8.registers[instruction.x] = 0x3A;
+    chip8.execute(instruction);
+    const result = [
+      chip8.memory.getUint8(chip8.I),
+      chip8.memory.getUint8(chip8.I + 1),
+      chip8.memory.getUint8(chip8.I + 2)
+    ]
+    expect(result).toEqual([0, 5, 8]);
+  });
 });
