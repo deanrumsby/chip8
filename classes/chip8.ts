@@ -369,6 +369,9 @@ export default class Chip8 {
             // LOADS REGISTERS FROM MEMORY - SEE DOCS
             break;
         }
+
+      default:
+        console.log('Not a valid instruction!', instruction);
     }
   }
 
