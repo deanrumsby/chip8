@@ -122,7 +122,10 @@ export default class Chip8 {
             this.clearScreen();
             break;
           case 0x0EE:
-            // RETURN FROM SUBROUTINE
+            // 00EE: RET
+            // Returns from subroutine
+            this.SP -= 1;
+            this.PC = this.stack[this.SP];
             break;
         }
         break;

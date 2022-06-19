@@ -408,4 +408,17 @@ describe('execute', () => {
     const result = [chip8.PC, chip8.stack[chip8.SP - 1], chip8.SP];
     expect(result).toEqual([0x0513, 0x0200, 0x01]);
   });
+
+  test('00EE', () => {
+    // 0x00EE
+    instruction = {
+      type: 0x0, nnn: 0x0EE, nn: 0xEE,
+      n: 0xE, x: 0x0, y: 0xE
+    };
+    chip8.SP = 0x5;
+    chip8.stack[chip8.SP - 1] = 0x244;
+    chip8.execute(instruction);
+    const result = [chip8.PC, chip8.SP];
+    expect(result).toEqual([0x244, 0x4]);
+  });
 });
