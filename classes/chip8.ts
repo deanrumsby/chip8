@@ -257,10 +257,15 @@ export default class Chip8 {
             break;
 
           case 0xE:
-            // OPTION ONE: SET VX = VY, then VX << 1
-            // (SHIFTED OUT BIT IN VF FLAG)
-            // OPTION TWO : VX << 1
-            // (SHIFTED OUT BIT IN VF FLAG)
+            // 8XYE: SHL VX {, VY}
+            // Shifts VX bitwise to the left, storing the shifted bit in VF
+            // If cosmac compatability is on, first sets VX = VY before the shift
+            if (this.cosmacCompatability) {
+              this.registers[instruction.x] = this.registers[instruction.y];
+            }
+            this.registers[0xF] = (this.registers[instruction.x] & 0b10000000) >> 7;
+            this.registers[instruction.x] <<= 1;
+            this.registers[instruction.x] %= 0x100;
             break;
         }
       

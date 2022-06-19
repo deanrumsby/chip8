@@ -463,4 +463,30 @@ describe('execute', () => {
     const result = [chip8.registers[instruction.x], chip8.registers[0xF]];
     expect(result).toEqual([0x28, 1]);
   });
+
+  test('8XYE - cosmac compatability off', () => {
+    // 0x80EE
+    instruction = {
+      type: 0x8, nnn: 0x0EE, nn: 0xEE,
+      n: 0xE, x: 0x0, y: 0xE
+    };
+    chip8.registers[instruction.x] = 0x05;
+    chip8.execute(instruction);
+    const result = [chip8.registers[instruction.x], chip8.registers[0xF]];
+    expect(result).toEqual([0x0A, 0]);
+  });
+
+  test('8XYE - cosmac compatability on', () => {
+    // 0x80EE
+    instruction = {
+      type: 0x8, nnn: 0x0EE, nn: 0xEE,
+      n: 0xE, x: 0x0, y: 0xE
+    };
+    chip8.cosmacCompatability = true;
+    chip8.registers[instruction.x] = 0x04;
+    chip8.registers[instruction.y] = 0xF5;
+    chip8.execute(instruction);
+    const result = [chip8.registers[instruction.x], chip8.registers[0xF]];
+    expect(result).toEqual([0xEA, 1]);
+  });
 });
