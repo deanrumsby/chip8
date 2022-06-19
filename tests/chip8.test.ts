@@ -397,4 +397,15 @@ describe('execute', () => {
     chip8.execute(instruction);
     expect(chip8.I).toBe(0x73);
   });
+
+  test('2NNN', () => {
+    // 0x2513
+    instruction = {
+      type: 0x2, nnn: 0x513, nn: 0x13,
+      n: 0x3, x: 0x5, y: 0x1
+    };
+    chip8.execute(instruction);
+    const result = [chip8.PC, chip8.stack[chip8.SP - 1], chip8.SP];
+    expect(result).toEqual([0x0513, 0x0200, 0x01]);
+  });
 });

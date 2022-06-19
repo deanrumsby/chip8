@@ -9,6 +9,7 @@ export default class Chip8 {
   fontStart: number;
   PC: number;
   I: number;
+  SP: number;
   registers: Array<number>
   delayTimer: number;
   soundTimer: number;
@@ -25,6 +26,7 @@ export default class Chip8 {
     this.fontStart = 0x50;
     this.PC = this.progStart;
     this.I = 0x00;
+    this.SP = 0x00;
     this.registers = [
       0x00, 0x00, 0x00, 0x00,
       0x00, 0x00, 0x00, 0x00,
@@ -132,7 +134,11 @@ export default class Chip8 {
         break;
 
       case 0x2:
-        // CALL SUBROUTINE AT NNN
+        // 2NNN: CALL NNN
+        // Calls subroutine at NNN
+        this.stack[this.SP] = this.PC;
+        this.SP += 1;
+        this.PC = instruction.nnn;
         break;
 
       case 0x3:
