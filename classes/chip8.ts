@@ -17,6 +17,7 @@ export default class Chip8 {
   cyclesPerSecond: number;
   clearScreen: Function;
   drawSprite: Function;
+  cosmacCompatability: boolean;
 
   constructor() {
     this.memory = new DataView(new ArrayBuffer(4096));
@@ -39,6 +40,7 @@ export default class Chip8 {
     this.cyclesPerSecond = 700;
     this.clearScreen = () => {};
     this.drawSprite = () => {};
+    this.cosmacCompatability = false;
   }
 
   bindClearScreen(callback: Function) {
@@ -231,10 +233,14 @@ export default class Chip8 {
             break;
 
           case 0x6:
-            // OPTION ONE: SET VX = VY, then VX >> 1
-            // (SHIFTED OUT BIT IN VF FLAG)
-            // OPTION TWO : VX >> 1
-            // (SHIFTED OUT BIT IN VF FLAG)
+            // 8XY6: SHR VX {, VY}
+            // Shifts VX bitwise to the right, storing the shifted bit in VF
+            // If cosmac compatability is on, first sets VX = VY before the shift
+            if (this.cosmacCompatability) {
+              this.registers[instruction.x] = this.registers[instruction.y];
+            }
+            this.registers[0xF] = this.registers[instruction.x] % 2;
+            this.registers[instruction.x] >>= 1;
             break;
 
           case 0x7:
