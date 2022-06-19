@@ -386,4 +386,15 @@ describe('execute', () => {
     const result = [chip8.I, chip8.registers[0xF]];
     expect(result).toEqual([0x1004, 0x01]);
   });
+
+  test('FX29', () => {
+    // 0xFA29
+    instruction = {
+      type: 0xF, nnn: 0xA29, nn: 0x29,
+      n: 0x9, x: 0xA, y: 0x2
+    };
+    chip8.registers[instruction.x] = 0x07;
+    chip8.execute(instruction);
+    expect(chip8.I).toBe(0x73);
+  });
 });

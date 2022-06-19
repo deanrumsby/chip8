@@ -337,8 +337,9 @@ export default class Chip8 {
             break;
 
           case 0x29:
-            // SET I TO THE FONT ADDRESS OF THE HEX
-            // CHARACTER IN VX
+            // FX29: LD F, VX
+            // Set I to the location of the font character value in VX
+            this.I = this.fontStart + (this.registers[instruction.x] * 5); 
             break;
 
           case 0x33:
