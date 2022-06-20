@@ -39,14 +39,14 @@ export default class Display {
     const paddedByteString = padding + byteString;
     for (let i = 0; i < 8; i++) {
       if (paddedByteString[i] === '1') {
-        this.togglePixel(x + i, y);
+        this.togglePixel((x + i) % this.canvas.width, y);
       }
     }
   }
 
   drawSprite(x: number, y: number, sprite: Array<number>) {
     for (let i = 0; i < sprite.length; i++) {
-      this.toggleByte(x, y + i, sprite[i]);      
+      this.toggleByte(x, (y + i) % this.canvas.height, sprite[i]);      
     }
     this.ctx.putImageData(this.imageData, 0, 0);
   }
