@@ -59,7 +59,7 @@ export default class Controller {
     this.chip8.reset();
   }
 
-  handleOnScreenKey = (event: Event, value: string) => {
-    console.log(value);
+  handleOnScreenKey = (event: Event, value: number) => {
+    this.chip8.setKeyEvent(event.type, value);
   }
 }

@@ -1,4 +1,5 @@
 import DecodedInstruction from "../interfaces/decoded-instruction";
+import KeyEvent from "../interfaces/key-event";
 import { FONT } from "../data/font";
 
 export default class Chip8 {
@@ -18,6 +19,7 @@ export default class Chip8 {
   clearScreen: Function;
   drawSprite: Function;
   cosmacCompatability: boolean;
+  keyEvent: KeyEvent;
 
   constructor() {
     this.memory = new DataView(new ArrayBuffer(4096));
@@ -41,6 +43,7 @@ export default class Chip8 {
     this.clearScreen = () => {};
     this.drawSprite = () => {};
     this.cosmacCompatability = false;
+    this.keyEvent = {type: null, value: null};
   }
 
   bindClearScreen(callback: Function) {
@@ -338,7 +341,16 @@ export default class Chip8 {
             break;
 
           case 0x0A:
-            // HALTS PC UNTIL KEY IS PRESSED
+            // FX0A: LD VX, K
+            // Waits for a key press, then stores the value in VX
+            // If cosmac compatability is on, then only stores on key up
+            if (this.keyEvent.value) {
+              if (!this.cosmacCompatability || this.keyEvent.type === "mouseup") {
+                this.registers[instruction.x] = this.keyEvent.value;
+              }
+            } else {
+              this.PC -= 2;
+            }
             break;
 
           case 0x15:
@@ -403,7 +415,8 @@ export default class Chip8 {
             }
             break;
         }
-
+      break;
+      
       default:
         console.log('Not a valid instruction!', instruction);
     }
@@ -417,6 +430,7 @@ export default class Chip8 {
     console.log(instruction.toString(16)); // <-------- REMOVE THIS LATER
     const decodedInstruction = this.decode(instruction);
     this.execute(decodedInstruction);
+    this.setKeyEvent(null, null);
   }
 
   sleep(milliseconds: number) {
@@ -442,6 +456,11 @@ export default class Chip8 {
       cycles++;
     }
   }
+
+  setKeyEvent(type: string|null, value: number|null) {
+    this.keyEvent.type = type;
+    this.keyEvent.value = value;
+  } 
 
   stop() {
     this.running = false;
