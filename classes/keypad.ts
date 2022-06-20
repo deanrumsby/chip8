@@ -15,10 +15,20 @@ export default class Keypad {
     const keys = [];
     for (let i = 0; i < 16; i++) {
       const key = document.createElement('button');
-      key.classList.add('key', 'num' + i.toString(16).toUpperCase());
-      key.innerText = i.toString(16).toUpperCase();
+      const numString = i.toString(16).toUpperCase();
+      key.classList.add('key', 'num' + numString);
+      key.innerText = numString;
+      key.value = numString;
       keys.push(key);
     }
     return keys;
+  }
+
+  bindOnScreenKey(handler: Function) {
+    for (let key of this.keys) {
+      key.addEventListener('click', (event) => {
+        handler(event, key.value);
+      });
+    }
   }
 }

@@ -23,6 +23,7 @@ export default class Controller {
     this.options.bindRun(this.handleRun);
     this.options.bindPause(this.handlePause);
     this.options.bindReset(this.handleReset);
+    this.keypad.bindOnScreenKey(this.handleOnScreenKey);
   }
 
   clearScreen = () => {
@@ -56,5 +57,9 @@ export default class Controller {
 
   handleReset = (event: Event) => {
     this.chip8.reset();
+  }
+
+  handleOnScreenKey = (event: Event, value: string) => {
+    console.log(value);
   }
 }
