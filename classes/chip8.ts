@@ -327,8 +327,11 @@ export default class Chip8 {
             break;
 
           case 0x9E:
-            // SKIP INSTRUCTION IF BUTTON WITH VALUE VX IS 
-            // CURRENTLY PRESSED DOWN
+            // EX9E: SKP VX
+            // Skips instruction if the key with value VX is currently pressed
+            if (this.keyEvent.value === this.registers[instruction.x]) {
+              this.PC += 2;
+            }
             break;
         }
 
@@ -432,7 +435,9 @@ export default class Chip8 {
     console.log(instruction.toString(16)); // <-------- REMOVE THIS LATER
     const decodedInstruction = this.decode(instruction);
     this.execute(decodedInstruction);
-    this.setKeyEvent(null, null);
+    if (this.keyEvent.type === "mouseup") {
+      this.setKeyEvent(null, null);
+    }
   }
 
   sleep(milliseconds: number) {
