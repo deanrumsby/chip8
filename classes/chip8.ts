@@ -321,15 +321,18 @@ export default class Chip8 {
 
       case 0xE:
         switch (instruction.nn) {
-          case 0xA1:
-            // SKIP INSTRUCTION IF BUTTON WITH VALUE VX NOT 
-            // CURRENTLY PRESSED DOWN
-            break;
-
           case 0x9E:
             // EX9E: SKP VX
-            // Skips instruction if the key with value VX is currently pressed
+            // Skips the next instruction if the key with value VX is currently pressed
             if (this.keyEvent.value === this.registers[instruction.x]) {
+              this.PC += 2;
+            }
+            break;
+
+          case 0xA1:
+            // EXA1: SKNP VX
+            // Skips the next instruction if the key with value VX is not pressed
+            if (this.keyEvent.value !== this.registers[instruction.x]) {
               this.PC += 2;
             }
             break;
