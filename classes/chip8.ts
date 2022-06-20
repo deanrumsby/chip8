@@ -344,10 +344,12 @@ export default class Chip8 {
             // FX0A: LD VX, K
             // Waits for a key press, then stores the value in VX
             // If cosmac compatability is on, then only stores on key up
-            if (this.keyEvent.value) {
-              if (!this.cosmacCompatability || this.keyEvent.type === "mouseup") {
+            if (
+              this.keyEvent.value 
+              && (!this.cosmacCompatability || this.keyEvent.type === "mouseup") 
+            ) {
                 this.registers[instruction.x] = this.keyEvent.value;
-              }
+                console.log(this.keyEvent.type);
             } else {
               this.PC -= 2;
             }
@@ -416,7 +418,7 @@ export default class Chip8 {
             break;
         }
       break;
-      
+
       default:
         console.log('Not a valid instruction!', instruction);
     }

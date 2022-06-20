@@ -5,6 +5,7 @@ export default class Options {
   pause: HTMLButtonElement;
   step: HTMLButtonElement;
   reset: HTMLButtonElement;
+  cosmacCompatability: HTMLLabelElement;
 
   constructor() {
     this.root = document.querySelector('#options') as HTMLDivElement;
@@ -13,13 +14,15 @@ export default class Options {
     this.pause = this.createButton('Pause');
     this.step = this.createButton('Step');
     this.reset = this.createButton('Reset');
+    this.cosmacCompatability = this.createCheckbox('Cosmac Compatability', 'cosmac');
   
     this.root.append(
       this.programSelect,
       this.run,
       this.pause,
       this.step,
-      this.reset
+      this.reset,
+      this.cosmacCompatability
     );
   }
 
@@ -36,6 +39,17 @@ export default class Options {
     const button = document.createElement('button');
     button.innerText = text;
     return button;
+  }
+
+  createCheckbox(text: string, id: string) {
+    const checkbox = document.createElement('input');
+    checkbox.type = "checkbox";
+    checkbox.id = id;
+    const label = document.createElement('label');
+    label.htmlFor = id;
+    label.innerText = text;
+    label.append(checkbox);
+    return label;
   }
 
   bindLoad(handler: Function) {
@@ -68,6 +82,13 @@ export default class Options {
 
   bindReset(handler: Function) {
     this.reset.addEventListener('click', (event) => {
+      handler(event);
+    });
+  }
+
+  bindCosmacCompatability(handler: Function) {
+    const checkbox = this.cosmacCompatability.querySelector('input') as HTMLInputElement;
+    checkbox.addEventListener('change', (event) => {
       handler(event);
     });
   }
