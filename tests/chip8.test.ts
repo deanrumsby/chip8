@@ -517,4 +517,45 @@ describe('execute', () => {
     chip8.execute(instruction);
     expect(chip8.PC).toBe(0x526);
   });
+
+  test('FX55 - cosmac compatability off', () => {
+    // 0xF355
+    instruction = {
+      type: 0xF, nnn: 0x355, nn: 0x55,
+      n: 0x5, x: 0x3, y: 0x5
+    };
+    chip8.cosmacCompatability = false;
+    chip8.I = 0x234;
+    chip8.registers[0x0] = 0x52;
+    chip8.registers[0x1] = 0xAA;
+    chip8.registers[0x2] = 0x31;
+    chip8.registers[0x3] = 0x10;
+    chip8.execute(instruction);
+    const result = [];
+    for (let i = 0; i <= instruction.x; i++) {
+      result.push(chip8.memory.getUint8(chip8.I + i));
+    }
+    result.push(chip8.I);
+    expect(result).toEqual([0x52, 0xAA, 0x31, 0x10, 0x234]);
+  });
+
+  test('FX55 - cosmac compatability on', () => {
+    // 0xF255
+    instruction = {
+      type: 0xF, nnn: 0x255, nn: 0x55,
+      n: 0x5, x: 0x2, y: 0x5
+    };
+    chip8.cosmacCompatability = true;
+    chip8.I = 0x202;
+    chip8.registers[0x0] = 0x23;
+    chip8.registers[0x1] = 0xAB;
+    chip8.registers[0x2] = 0x54;
+    chip8.execute(instruction);
+    const result = [];
+    for (let i = 0; i <= instruction.x; i++) {
+      result.push(chip8.memory.getUint8(0x202 + i));
+    }
+    result.push(chip8.I)
+    expect(result).toEqual([0x23, 0xAB, 0x54, 0x205]);
+  });
 });

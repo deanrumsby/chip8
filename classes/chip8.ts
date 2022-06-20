@@ -380,7 +380,15 @@ export default class Chip8 {
             break;
 
           case 0x55:
-            // STORES REGISTERS TO MEMORY - SEE DOCS
+            // FX55: LD [I], VX
+            // Stores registers V0 to VX to memory, starting at [I]
+            // With cosmac compatability on, each register stored increments I
+            for (let i = 0; i <= instruction.x; i++) {
+              this.memory.setUint8(this.I + i, this.registers[i]);
+            }
+            if (this.cosmacCompatability) {
+              this.I += instruction.x + 1;
+            }
             break;
 
           case 0x65:
