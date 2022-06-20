@@ -392,7 +392,15 @@ export default class Chip8 {
             break;
 
           case 0x65:
-            // LOADS REGISTERS FROM MEMORY - SEE DOCS
+            // FX55: LD VX, [I]
+            // Loads memory into registers V0 to VX, starting at [I]
+            // With cosmac compatability on, each register loaded increments I
+            for (let i = 0; i <= instruction.x; i++) {
+              this.registers[i] = this.memory.getUint8(this.I + i);
+            }
+            if (this.cosmacCompatability) {
+              this.I += instruction.x + 1;
+            }
             break;
         }
 
