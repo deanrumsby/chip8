@@ -1,0 +1,76 @@
+.keypad {
+    display: grid;
+    height: 250px;
+    width: 250px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-areas: 
+    "num1 num2 num3 numC"
+    "num4 num5 num6 numD"
+    "num7 num8 num9 numE"
+    "numA num0 numB numF";
+}
+
+.num0 {
+    grid-area: num0;
+}
+
+.num1 {
+    grid-area: num1;
+}
+
+.num2 {
+    grid-area: num2;
+}
+
+.num3 {
+    grid-area: num3;
+}
+
+.num4 {
+    grid-area: num4;
+}
+
+.num5 {
+    grid-area: num5;
+}
+
+.num6 {
+    grid-area: num6;
+}
+
+.num7 {
+    grid-area: num7;
+}
+
+.num8 {
+    grid-area: num8;
+}
+
+.num9 {
+    grid-area: num9;
+}
+
+.numA {
+    grid-area: numA;
+}
+
+.numB {
+    grid-area: numB;
+}
+
+.numC {
+    grid-area: numC;
+}
+
+.numD {
+    grid-area: numD;
+}
+
+.numE {
+    grid-area: numE;
+}
+
+.numF {
+    grid-area: numF;
+}

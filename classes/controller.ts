@@ -1,16 +1,19 @@
 import Chip8 from "./chip8";
 import Display from "./display";
 import Options from "./options";
+import Keypad from "./keypad";
 
 export default class Controller {
   chip8: Chip8;
   display: Display;
   options: Options;
+  keypad: Keypad;
 
   constructor() {
     this.chip8 = new Chip8();
     this.display = new Display();
     this.options = new Options();
+    this.keypad = new Keypad();
 
     // Bind callbacks and event handlers
     this.chip8.bindClearScreen(this.clearScreen);
