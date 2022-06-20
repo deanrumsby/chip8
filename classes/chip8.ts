@@ -284,8 +284,15 @@ export default class Chip8 {
         break;
 
       case 0xB:
-        // OPTION ONE: JUMP TO NNN + V0
-        // OPTION TWO: JUMP TO XNN + VX
+        // BNNN: JMP V0, NNN (Cosmac Capatability On)
+        // Sets PC = V0 + NNN
+        // BXNN: JMP X0, NNN (Cosmac Capatability Off)
+        // Sets PC = VX + XNN
+        if (this.cosmacCompatability) {
+          this.PC = this.registers[0x0] + instruction.nnn;
+        } else {
+          this.PC = this.registers[instruction.x] + instruction.nnn;
+        }
         break;
 
       case 0xC:

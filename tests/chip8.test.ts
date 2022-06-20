@@ -444,6 +444,7 @@ describe('execute', () => {
       type: 0x8, nnn: 0x4C6, nn: 0xC6,
       n: 0x6, x: 0x4, y: 0xC
     };
+    chip8.cosmacCompatability = false;
     chip8.registers[instruction.x] = 0x22;
     chip8.execute(instruction);
     const result = [chip8.registers[instruction.x], chip8.registers[0xF]];
@@ -470,6 +471,7 @@ describe('execute', () => {
       type: 0x8, nnn: 0x0EE, nn: 0xEE,
       n: 0xE, x: 0x0, y: 0xE
     };
+    chip8.cosmacCompatability = false;
     chip8.registers[instruction.x] = 0x05;
     chip8.execute(instruction);
     const result = [chip8.registers[instruction.x], chip8.registers[0xF]];
@@ -488,5 +490,31 @@ describe('execute', () => {
     chip8.execute(instruction);
     const result = [chip8.registers[instruction.x], chip8.registers[0xF]];
     expect(result).toEqual([0xEA, 1]);
+  });
+
+  test('BNNN - cosmac compatability on', () => {
+    // 0xB521
+    instruction = {
+      type: 0xB, nnn: 0x521, nn: 0x21,
+      n: 0x1, x: 0x5, y: 0x2
+    };
+    chip8.cosmacCompatability = true;
+    chip8.registers[0x0] = 0xA2;
+    chip8.PC = 0x250;
+    chip8.execute(instruction);
+    expect(chip8.PC).toBe(0x5C3);
+  });
+
+  test('BXNN - cosmac compatability off', () => {
+    // 0xB521
+    instruction = {
+      type: 0xB, nnn: 0x521, nn: 0x21,
+      n: 0x1, x: 0x5, y: 0x2
+    };
+    chip8.cosmacCompatability = false;
+    chip8.registers[instruction.x] = 0x05;
+    chip8.PC = 0x250;
+    chip8.execute(instruction);
+    expect(chip8.PC).toBe(0x526);
   });
 });
