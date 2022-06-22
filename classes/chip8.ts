@@ -456,9 +456,11 @@ export default class Chip8 {
     if (this.keyEvent.type === "mouseup") {
       this.setKeyEvent(null, null);
     }
+    // CODE BELOW ONLY WORKS AT SPEED >= 60 per second
     if (this.cycles % Math.floor(this.cyclesPerSecond / 60) === 0) {
       this.reduceTimers();
     }
+    this.cycles++;
   }
 
   sleep(milliseconds: number) {
@@ -467,20 +469,36 @@ export default class Chip8 {
     });
   }
 
+  determineCyclesPerInterval() {
+    if (this.cyclesPerSecond < 40) {
+      return 1;
+    } else if (this.cyclesPerSecond < 100) {
+      return 4;
+    } else if (this.cyclesPerSecond < 200) {
+      return 8;
+    } else if (this.cyclesPerSecond < 500) {
+      return 24;
+    } else {
+      return 50;
+    }
+  }
+
   async run() {
     this.running = true;
     let startTime = performance.now();
     while (this.running) {
-      if (this.cycles === this.cyclesPerSecond) {
+      const cyclesPerInterval = this.determineCyclesPerInterval();
+      if (this.cycles === cyclesPerInterval) {
         const endTime = performance.now();
-        const sleepTime = 1000 - (endTime - startTime);
+        const timeDelta = endTime - startTime;
+        const timePerCycle = 1000 / this.cyclesPerSecond;
+        const sleepTime = (timePerCycle * cyclesPerInterval) - timeDelta;
         console.log(sleepTime);
         await this.sleep(sleepTime);
         this.cycles = 0;
         startTime = performance.now();
       }
       this.step();
-      this.cycles++;
     }
   }
 
