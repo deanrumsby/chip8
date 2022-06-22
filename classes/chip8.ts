@@ -15,6 +15,7 @@ export default class Chip8 {
   delayTimer: number;
   soundTimer: number;
   running: boolean;
+  cycles: number;
   cyclesPerSecond: number;
   clearScreen: Function;
   drawSprite: Function;
@@ -39,6 +40,7 @@ export default class Chip8 {
     this.delayTimer = 0x00;
     this.soundTimer = 0x00;
     this.running = false;
+    this.cycles = 0;
     this.cyclesPerSecond = 700;
     this.clearScreen = () => {};
     this.drawSprite = () => {};
@@ -97,6 +99,19 @@ export default class Chip8 {
 
   resetStack() {
     this.stack = new Uint16Array(16);
+  }
+
+  clock() {
+
+  }
+
+  reduceTimers() {
+    if (this.delayTimer > 0) {
+      this.delayTimer--;
+    }
+    if (this.soundTimer > 0) {
+      this.soundTimer--;
+    }
   }
 
   fetch() {
@@ -441,6 +456,9 @@ export default class Chip8 {
     if (this.keyEvent.type === "mouseup") {
       this.setKeyEvent(null, null);
     }
+    if (this.cycles % Math.floor(this.cyclesPerSecond / 60) === 0) {
+      this.reduceTimers();
+    }
   }
 
   sleep(milliseconds: number) {
@@ -452,18 +470,17 @@ export default class Chip8 {
   async run() {
     this.running = true;
     let startTime = performance.now();
-    let cycles = 0;
     while (this.running) {
-      if (cycles === this.cyclesPerSecond) {
+      if (this.cycles === this.cyclesPerSecond) {
         const endTime = performance.now();
         const sleepTime = 1000 - (endTime - startTime);
         console.log(sleepTime);
         await this.sleep(sleepTime);
-        cycles = 0;
+        this.cycles = 0;
         startTime = performance.now();
       }
       this.step();
-      cycles++;
+      this.cycles++;
     }
   }
 
