@@ -23,6 +23,7 @@ export default class Controller {
     this.options.bindRun(this.handleRun);
     this.options.bindPause(this.handlePause);
     this.options.bindReset(this.handleReset);
+    this.options.bindSpeed(this.handleSpeed);
     this.options.bindCosmacCompatability(this.handleCosmacCompatability);
     this.keypad.bindOnScreenKey(this.handleOnScreenKey);
   }
@@ -66,5 +67,9 @@ export default class Controller {
 
   handleCosmacCompatability = (event: Event) => {
     this.chip8.cosmacCompatability = !this.chip8.cosmacCompatability;
+  }
+
+  handleSpeed = (event: Event, value: number) => {
+    this.chip8.cyclesPerSecond = value;
   }
 }

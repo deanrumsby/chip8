@@ -5,6 +5,7 @@ export default class Options {
   pause: HTMLButtonElement;
   step: HTMLButtonElement;
   reset: HTMLButtonElement;
+  speed: HTMLLabelElement;
   cosmacCompatability: HTMLLabelElement;
 
   constructor() {
@@ -14,6 +15,7 @@ export default class Options {
     this.pause = this.createButton('Pause');
     this.step = this.createButton('Step');
     this.reset = this.createButton('Reset');
+    this.speed = this.createNumberInput('Instructions / Second', 'speed', '700', '1', '1000');
     this.cosmacCompatability = this.createCheckbox('Cosmac Compatability', 'cosmac');
   
     this.root.append(
@@ -22,13 +24,14 @@ export default class Options {
       this.pause,
       this.step,
       this.reset,
+      this.speed,
       this.cosmacCompatability
     );
   }
 
   createProgramSelect() {
     const select = document.createElement('select');
-    const options = ['Select a program', 'IBM Logo'];
+    const options = ['Select a program', 'IBM Logo', 'Snek', 'OctoJam'];
     for (let option of options) {
       select.append(new Option(option, option));
     }
@@ -42,13 +45,27 @@ export default class Options {
   }
 
   createCheckbox(text: string, id: string) {
-    const checkbox = document.createElement('input');
-    checkbox.type = "checkbox";
-    checkbox.id = id;
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.id = id;
     const label = document.createElement('label');
     label.htmlFor = id;
     label.innerText = text;
-    label.append(checkbox);
+    label.append(input);
+    return label;
+  }
+
+  createNumberInput(text: string, id: string, value: string, min: string, max: string) {
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.value = value;
+    input.min = min;
+    input.max = max;
+    input.id = id;
+    const label = document.createElement('label');
+    label.htmlFor = id;
+    label.innerText = text;
+    label.append(input);
     return label;
   }
 
@@ -90,6 +107,13 @@ export default class Options {
     const checkbox = this.cosmacCompatability.querySelector('input') as HTMLInputElement;
     checkbox.addEventListener('change', (event) => {
       handler(event);
+    });
+  }
+
+  bindSpeed(handler: Function) {
+    const input = this.speed.querySelector('input') as HTMLInputElement;
+    input.addEventListener('change', (event) => {
+      handler(event, parseInt(input.value));
     });
   }
 }
