@@ -62,7 +62,7 @@ export default class Controller {
   }
 
   handleOnScreenKey = (event: Event, value: number) => {
-    this.chip8.setKeyEvent(event.type, value);
+    this.chip8.keyPressed = value;
   }
 
   handleCosmacCompatability = (event: Event) => {

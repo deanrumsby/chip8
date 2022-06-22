@@ -31,7 +31,7 @@ export default class Options {
 
   createProgramSelect() {
     const select = document.createElement('select');
-    const options = ['Select a program', 'IBM Logo', 'Snek', 'OctoJam'];
+    const options = ['Select a program', 'IBM Logo', 'Delay Timer', 'Clock'];
     for (let option of options) {
       select.append(new Option(option, option));
     }

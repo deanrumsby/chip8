@@ -1,5 +1,4 @@
 import DecodedInstruction from "../interfaces/decoded-instruction";
-import KeyEvent from "../interfaces/key-event";
 import { FONT } from "../data/font";
 
 export default class Chip8 {
@@ -20,7 +19,7 @@ export default class Chip8 {
   clearScreen: Function;
   drawSprite: Function;
   cosmacCompatability: boolean;
-  keyEvent: KeyEvent;
+  keyPressed: number | null;
 
   constructor() {
     this.memory = new DataView(new ArrayBuffer(4096));
@@ -45,7 +44,7 @@ export default class Chip8 {
     this.clearScreen = () => {};
     this.drawSprite = () => {};
     this.cosmacCompatability = false;
-    this.keyEvent = {type: null, value: null};
+    this.keyPressed = null;
   }
 
   bindClearScreen(callback: Function) {
@@ -339,7 +338,7 @@ export default class Chip8 {
           case 0x9E:
             // EX9E: SKP VX
             // Skips the next instruction if the key with value VX is currently pressed
-            if (this.keyEvent.value === this.registers[instruction.x]) {
+            if (this.keyPressed === this.registers[instruction.x]) {
               this.PC += 2;
             }
             break;
@@ -347,7 +346,7 @@ export default class Chip8 {
           case 0xA1:
             // EXA1: SKNP VX
             // Skips the next instruction if the key with value VX is not pressed
-            if (this.keyEvent.value !== this.registers[instruction.x]) {
+            if (this.keyPressed !== this.registers[instruction.x]) {
               this.PC += 2;
             }
             break;
@@ -364,13 +363,9 @@ export default class Chip8 {
           case 0x0A:
             // FX0A: LD VX, K
             // Waits for a key press, then stores the value in VX
-            // If cosmac compatability is on, then only stores on key up
-            if (
-              this.keyEvent.value 
-              && (!this.cosmacCompatability || this.keyEvent.type === "mouseup") 
-            ) {
-                this.registers[instruction.x] = this.keyEvent.value;
-                console.log(this.keyEvent.type);
+            // Only registers the key when released
+            if (this.keyPressed) {
+              this.registers[instruction.x] = this.keyPressed;
             } else {
               this.PC -= 2;
             }
@@ -453,8 +448,8 @@ export default class Chip8 {
     console.log(instruction.toString(16)); // <-------- REMOVE THIS LATER
     const decodedInstruction = this.decode(instruction);
     this.execute(decodedInstruction);
-    if (this.keyEvent.type === "mouseup") {
-      this.setKeyEvent(null, null);
+    if (this.keyPressed) {
+      this.keyPressed = null;
     }
     // CODE BELOW ONLY WORKS AT SPEED >= 60 per second
     if (this.cycles % Math.floor(this.cyclesPerSecond / 60) === 0) {
@@ -501,11 +496,6 @@ export default class Chip8 {
       this.step();
     }
   }
-
-  setKeyEvent(type: string|null, value: number|null) {
-    this.keyEvent.type = type;
-    this.keyEvent.value = value;
-  } 
 
   stop() {
     this.running = false;

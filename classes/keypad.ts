@@ -26,11 +26,9 @@ export default class Keypad {
 
   bindOnScreenKey(handler: Function) {
     for (let key of this.keys) {
-      for (let type of ['mousedown', 'mouseup']) {
-        key.addEventListener(type, (event) => {
-          handler(event, parseInt(key.value, 16));
-        });
-      }
+      key.addEventListener('mouseup', (event) => {
+        handler(event, parseInt(key.value, 16));
+      });
     }
   }
 }
