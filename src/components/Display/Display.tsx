@@ -1,37 +1,38 @@
-import { memo, useRef } from "react";
+import { useContext, useMemo } from "react";
+import { memory } from "@deanrumsby/chip8_core/chip8_core_bg.wasm";
+
+import { type Chip8, Chip8Context } from "../Chip8";
+import Canvas from "../Canvas";
 
 interface DisplayProps {
   style?: React.CSSProperties;
   className?: string;
-  width: number;
-  height: number;
-  imageData?: ImageData;
 }
 
-const Display = memo(function Display({
-  style,
-  className,
-  width,
-  height,
-  imageData,
-}: DisplayProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+function Display({ style, className }: DisplayProps) {
+  const { chip8 } = useContext(Chip8Context) as Chip8;
 
-  if (canvasRef.current && imageData) {
-    const ctx = canvasRef.current.getContext("2d");
-    if (ctx) {
-      ctx.putImageData(imageData, 0, 0);
-    }
-  }
+  const frameBuffer = useMemo(
+    () =>
+      new Uint8ClampedArray(
+        memory.buffer,
+        chip8.frame_buffer_mut_ptr(),
+        chip8.frame_buffer_len()
+      ),
+    [chip8]
+  );
+
+  const imageData = new ImageData(frameBuffer, chip8.frame_width());
+
   return (
-    <canvas
-      ref={canvasRef}
-      style={{ imageRendering: "pixelated", ...style }}
+    <Canvas
+      style={style}
       className={className}
-      width={width}
-      height={height}
+      width={chip8.frame_width()}
+      height={chip8.frame_height()}
+      imageData={imageData}
     />
   );
-});
+}
 
 export default Display;
