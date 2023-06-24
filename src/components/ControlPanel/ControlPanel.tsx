@@ -19,7 +19,7 @@ function ControlPanel() {
   };
 
   return (
-    <div>
+    <div className="flex justify-center">
       <button onClick={() => setIsRunning(true)}>Start</button>
       <button onClick={() => setIsRunning(false)}>Stop</button>
       <input type="file" onChange={handleFileChange} />

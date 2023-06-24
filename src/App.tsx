@@ -1,12 +1,16 @@
 import Chip8Provider from "./components/Chip8";
+import AppBar from "./components/AppBar";
 import Display from "./components/Display";
 import ControlPanel from "./components/ControlPanel";
 
 function App() {
   return (
     <Chip8Provider>
-      <Display className="border border-black w-1/2" />
-      <ControlPanel />
+      <AppBar />
+      <div className="w-1/2">
+        <Display className="border border-black p-1 w-full" />
+        <ControlPanel />
+      </div>
     </Chip8Provider>
   );
 }
