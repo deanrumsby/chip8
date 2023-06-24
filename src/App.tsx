@@ -8,7 +8,7 @@ function App() {
     <Chip8Provider>
       <AppBar />
       <div className="w-1/2">
-        <Display className="border border-black p-1 w-full" />
+        <Display className="border border-black m-2 w-full" />
         <ControlPanel />
       </div>
     </Chip8Provider>
