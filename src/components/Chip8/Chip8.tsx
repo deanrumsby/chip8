@@ -4,6 +4,7 @@ import { Chip8 as Chip8Core, Key, KeyState } from "@deanrumsby/chip8_core";
 interface Chip8 {
   chip8: Chip8Core;
   setIsRunning: (isRunning: boolean) => void;
+  step: () => void;
 }
 
 const Chip8Context = createContext<Chip8 | null>(null);
@@ -37,6 +38,12 @@ const keys: {
 function useChip8() {
   const [isRunning, setIsRunning] = useState(false);
   const [, setUpdate] = useState(false);
+
+  const step = () => {
+    chip8.step();
+    // this is to force a re-render
+    setUpdate((x) => !x);
+  };
 
   useEffect(() => {
     let loopId: number;
@@ -84,6 +91,7 @@ function useChip8() {
   return {
     chip8,
     setIsRunning,
+    step,
   };
 }
 

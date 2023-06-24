@@ -8,7 +8,7 @@ import {
 import { Chip8Context, type Chip8 } from "../Chip8";
 
 function ControlPanel() {
-  const { chip8, setIsRunning } = useContext(Chip8Context) as Chip8;
+  const { setIsRunning, step } = useContext(Chip8Context) as Chip8;
 
   const iconStyle = "text-4xl mx-3 cursor-pointer";
 
@@ -19,7 +19,7 @@ function ControlPanel() {
         className={iconStyle}
         onClick={() => setIsRunning(false)}
       />
-      <VscDebugStepOver className={iconStyle} onClick={() => chip8.step()} />
+      <VscDebugStepOver className={iconStyle} onClick={step} />
     </div>
   );
 }
