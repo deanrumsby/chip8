@@ -1,20 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useMemo, useContext } from "react";
 
-const menu = [
-  {
-    id: 0,
-    name: "File",
-    items: [
-      {
-        name: "Open",
-        action: () => {},
-      },
-    ],
-  },
-];
+import { Chip8Context, type Chip8 } from "../Chip8";
 
 function AppBar() {
+  const { chip8 } = useContext(Chip8Context) as Chip8;
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
+  const [openFileName, setOpenFileName] = useState<string | null>(null);
+
+  const menu = useMemo(
+    () => [
+      {
+        id: 0,
+        name: "File",
+        items: [
+          {
+            name: "Open",
+            action: () => {
+              inputRef.current?.click();
+            },
+          },
+        ],
+      },
+    ],
+    []
+  );
 
   const handleClickMenu = (event: React.MouseEvent, id: number) => {
     event.stopPropagation();
@@ -26,8 +37,21 @@ function AppBar() {
   };
 
   const handleCloseMenu = () => {
-    console.log("close");
     setOpenMenuId(null);
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target;
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
+      const typedArray = new Uint8Array(fileReader.result as ArrayBufferLike);
+      chip8.load(typedArray);
+    };
+    if (!input.files) {
+      return;
+    }
+    fileReader.readAsArrayBuffer(input.files[0]);
+    setOpenFileName(input.files[0].name);
   };
 
   useEffect(() => {
@@ -66,6 +90,13 @@ function AppBar() {
           )}
         </div>
       ))}
+      <span className="text-sm pr-2">{openFileName ? openFileName : ""}</span>
+      <input
+        className="hidden"
+        ref={inputRef}
+        type="file"
+        onChange={handleFileChange}
+      />
     </div>
   );
 }
