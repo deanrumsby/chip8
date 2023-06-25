@@ -3,23 +3,22 @@ import {
   VscDebugStart,
   VscDebugPause,
   VscDebugStepOver,
+  VscDebugRestart,
 } from "react-icons/vsc";
 
 import { Chip8Context, type Chip8 } from "../Chip8";
 
 function ControlPanel() {
-  const { setIsRunning, step } = useContext(Chip8Context) as Chip8;
+  const { play, pause, reset, step } = useContext(Chip8Context) as Chip8;
 
   const iconStyle = "text-4xl mx-3 cursor-pointer";
 
   return (
     <div className="flex justify-center">
-      <VscDebugStart className={iconStyle} onClick={() => setIsRunning(true)} />
-      <VscDebugPause
-        className={iconStyle}
-        onClick={() => setIsRunning(false)}
-      />
+      <VscDebugStart className={iconStyle} onClick={play} />
+      <VscDebugPause className={iconStyle} onClick={pause} />
       <VscDebugStepOver className={iconStyle} onClick={step} />
+      <VscDebugRestart className={iconStyle} onClick={reset} />
     </div>
   );
 }

@@ -3,9 +3,14 @@ import { Chip8 as Chip8Core, Key, KeyState } from "@deanrumsby/chip8_core";
 
 interface Chip8 {
   chip8: Chip8Core;
-  setIsRunning: (isRunning: boolean) => void;
+  play: () => void;
+  pause: () => void;
+  load: (program: Uint8Array) => void;
   step: () => void;
+  reset: () => void;
 }
+
+type Chip8State = "initial" | "running" | "paused" | "reset";
 
 const Chip8Context = createContext<Chip8 | null>(null);
 
@@ -36,14 +41,42 @@ const keys: {
 };
 
 function useChip8() {
-  const [isRunning, setIsRunning] = useState(false);
+  const [state, setState] = useState<Chip8State>("initial");
+  const [currentProgram, setCurrentProgram] = useState<Uint8Array | null>(null);
   const [, setUpdate] = useState(false);
+
+  const forceRender = () => {
+    setUpdate((x) => !x);
+  };
+
+  const load = (program: Uint8Array) => {
+    chip8.load(program);
+    setCurrentProgram(program);
+  };
+
+  const play = () => {
+    setState("running");
+  };
+
+  const pause = () => {
+    setState("paused");
+  };
 
   const step = () => {
     chip8.step();
-    // this is to force a re-render
-    setUpdate((x) => !x);
+    forceRender();
   };
+
+  const reset = () => {
+    setState("reset");
+  };
+
+  if (state === "reset") {
+    chip8.reset();
+    if (currentProgram) {
+      chip8.load(currentProgram);
+    }
+  }
 
   useEffect(() => {
     let loopId: number;
@@ -53,19 +86,18 @@ function useChip8() {
         previousTimestamp = timestamp;
       }
       const elapsed = timestamp - previousTimestamp;
-      console.log(elapsed);
+      // console.log(elapsed);
       const elapsedMicroSeconds = convertTimestamp(elapsed);
       chip8.update(elapsedMicroSeconds);
       previousTimestamp = timestamp;
-      // this is to force a re-render
-      setUpdate((x) => !x);
+      forceRender();
       loopId = window.requestAnimationFrame(loop);
     };
-    if (isRunning) {
+    if (state === "running") {
       loopId = window.requestAnimationFrame(loop);
     }
     return () => window.cancelAnimationFrame(loopId);
-  }, [isRunning]);
+  }, [state]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -90,8 +122,11 @@ function useChip8() {
 
   return {
     chip8,
-    setIsRunning,
+    play,
+    pause,
+    load,
     step,
+    reset,
   };
 }
 

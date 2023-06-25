@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useMemo, useContext } from "react";
 import { Chip8Context, type Chip8 } from "../Chip8";
 
 function AppBar() {
-  const { chip8 } = useContext(Chip8Context) as Chip8;
+  const { load } = useContext(Chip8Context) as Chip8;
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
@@ -45,7 +45,7 @@ function AppBar() {
     const fileReader = new FileReader();
     fileReader.onload = () => {
       const typedArray = new Uint8Array(fileReader.result as ArrayBufferLike);
-      chip8.load(typedArray);
+      load(typedArray);
     };
     if (!input.files) {
       return;
