@@ -1,4 +1,4 @@
-import Chip8Provider from "./components/Chip8";
+import Chip8Provider from "./context/Chip8Context";
 import AppBar from "./components/AppBar";
 import Display from "./components/Display";
 import ControlPanel from "./components/ControlPanel";

@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef, useMemo, useContext } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 
-import { Chip8Context, type Chip8 } from "../Chip8";
+import { useChip8Context } from "../../context/Chip8Context";
 
 function AppBar() {
-  const { load } = useContext(Chip8Context) as Chip8;
+  const { load } = useChip8Context();
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
@@ -24,7 +24,7 @@ function AppBar() {
         ],
       },
     ],
-    []
+    [],
   );
 
   const handleClickMenu = (event: React.MouseEvent, id: number) => {

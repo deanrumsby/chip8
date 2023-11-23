@@ -1,6 +1,4 @@
-import { useContext } from "react";
-
-import { type Chip8, Chip8Context } from "../Chip8";
+import { useChip8Context } from "../../context/Chip8Context";
 import Canvas from "../Canvas";
 
 interface DisplayProps {
@@ -9,7 +7,7 @@ interface DisplayProps {
 }
 
 function Display({ style, className }: DisplayProps) {
-  const { chip8 } = useContext(Chip8Context) as Chip8;
+  const { chip8 } = useChip8Context();
 
   const imageData = new ImageData(chip8.frame(), chip8.frame_width());
 

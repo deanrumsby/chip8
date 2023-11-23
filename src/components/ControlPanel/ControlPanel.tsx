@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import {
   VscDebugStart,
   VscDebugPause,
@@ -6,10 +5,10 @@ import {
   VscDebugRestart,
 } from "react-icons/vsc";
 
-import { Chip8Context, type Chip8 } from "../Chip8";
+import { useChip8Context } from "../../context/Chip8Context";
 
 function ControlPanel() {
-  const { play, pause, reset, step } = useContext(Chip8Context) as Chip8;
+  const { play, pause, reset, step } = useChip8Context();
 
   const iconStyle = "text-4xl mx-3 cursor-pointer";
 

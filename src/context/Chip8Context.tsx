@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import { Chip8 as Chip8Core, Key, KeyState } from "@deanrumsby/chip8_core";
 
 interface Chip8 {
@@ -138,5 +138,13 @@ function Chip8Provider({ children }: { children: React.ReactNode }) {
   );
 }
 
+function useChip8Context() {
+  const context = useContext(Chip8Context);
+  if (context === null) {
+    throw new Error("useChip8Context must be used within a Chip8Provider");
+  }
+  return context;
+}
+
 export default Chip8Provider;
-export { Chip8Context, type Chip8 };
+export { useChip8Context };
