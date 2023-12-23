@@ -7,16 +7,16 @@ interface DisplayProps {
 }
 
 function Display({ style, className }: DisplayProps) {
-  const { chip8 } = useChip8Context();
+  const { frame } = useChip8Context();
 
-  const imageData = new ImageData(chip8.frame(), chip8.frame_width());
+  const imageData = new ImageData(frame, 64);
 
   return (
     <Canvas
       style={style}
       className={className}
-      width={chip8.frame_width()}
-      height={chip8.frame_height()}
+      width={64}
+      height={32}
       imageData={imageData}
     />
   );
