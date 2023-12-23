@@ -7,12 +7,17 @@ import {
 } from "@deanrumsby/chip8_core";
 
 interface Chip8 {
+  status: Chip8State;
   frame: Uint8ClampedArray;
   registers: Registers;
+  speed: number;
+  setSpeed: (speed: number) => void;
+  setRegisters: (registers: Registers) => void;
   play: () => void;
   pause: () => void;
   load: (program: Uint8Array) => void;
   step: () => void;
+  set_registers: (registers: Registers) => void;
   reset: () => void;
 }
 
@@ -49,12 +54,14 @@ const keys: {
 function useChip8() {
   const [status, setStatus] = useState<Chip8State>("initial");
   const [frame, setFrame] = useState(chip8.frame());
+  const [speed, setSpeed] = useState(chip8.speed());
   const [registers, setRegisters] = useState(chip8.registers());
   const [currentProgram, setCurrentProgram] = useState<Uint8Array | null>(null);
 
   const updateState = () => {
     setFrame(chip8.frame());
     setRegisters(chip8.registers());
+    setSpeed(chip8.speed());
   };
 
   const load = (program: Uint8Array) => {
@@ -79,11 +86,23 @@ function useChip8() {
     setStatus("reset");
   };
 
+  const handleSetSpeed = (speed: number) => {
+    chip8.set_speed(speed);
+    updateState();
+  };
+
+  const handleSetRegisters = (registers: Registers) => {
+    chip8.set_registers(registers);
+    updateState();
+  };
+
   if (status === "reset") {
     chip8.reset();
     if (currentProgram) {
       chip8.load(currentProgram);
     }
+    updateState();
+    setStatus("paused");
   }
 
   useEffect(() => {
@@ -129,8 +148,12 @@ function useChip8() {
   }, []);
 
   return {
+    status,
     frame,
     registers,
+    setRegisters: handleSetRegisters,
+    speed,
+    setSpeed: handleSetSpeed,
     play,
     pause,
     load,
