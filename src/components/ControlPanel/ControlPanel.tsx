@@ -1,23 +1,39 @@
-import {
-  VscDebugStart,
-  VscDebugPause,
-  VscDebugStepOver,
-  VscDebugRestart,
-} from "react-icons/vsc";
-
 import { useChip8Context } from "../../context/Chip8Context";
 
 function ControlPanel() {
-  const { play, pause, reset, step } = useChip8Context();
+  const { status, speed, setSpeed, play, pause, reset, step } =
+    useChip8Context();
 
-  const iconStyle = "text-4xl mx-3 cursor-pointer";
+  const handleSetSpeed = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setSpeed(parseInt(value));
+  };
+
+  const handlePlayPause = () => {
+    if (status === "running") {
+      pause();
+    } else {
+      play();
+    }
+  };
 
   return (
-    <div className="flex justify-center border border-black p-2">
-      <VscDebugStart className={iconStyle} onClick={play} />
-      <VscDebugPause className={iconStyle} onClick={pause} />
-      <VscDebugStepOver className={iconStyle} onClick={step} />
-      <VscDebugRestart className={iconStyle} onClick={reset} />
+    <div className="flex justify-center gap-10 border border-black p-2">
+      <input
+        type="range"
+        min="1"
+        max="1400"
+        value={speed}
+        onChange={handleSetSpeed}
+      />
+      <button onClick={handlePlayPause}>
+        {status !== "running" ? "Play" : "Pause"}
+      </button>
+      <button disabled={status === "running"} onClick={step}>
+        Step
+      </button>
+      <button onClick={reset}>Reset</button>
+      <span className="text-4xl mx-3">{status}</span>
     </div>
   );
 }
