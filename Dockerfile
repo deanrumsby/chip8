@@ -25,6 +25,8 @@ FROM install AS dev
 
 EXPOSE 3000
 
+EXPOSE 24678
+
 CMD ["pnpm", "run", "dev"]
 
 
