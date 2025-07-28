@@ -1,0 +1,7 @@
+services:
+  web:
+    image: deanrumsby/chip8:latest
+    build:
+      target: prod
+    ports:
+      - "80:80"
