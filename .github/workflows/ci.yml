@@ -22,4 +22,5 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
+          target: prod
           tags: deanrumsby/chip8:latest
