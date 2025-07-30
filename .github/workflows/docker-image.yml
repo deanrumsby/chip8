@@ -1,7 +1,7 @@
-name: ci
+name: docker-image
 
 on:
-  release:
+  workflow_call: 
 
 jobs:
   docker:

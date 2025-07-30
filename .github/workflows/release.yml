@@ -1,10 +1,14 @@
-name: cd
+name: release
 
 on:
   release:
     
 jobs:
+  build:
+    uses: deanrumsby/chip8/.github/workflows/docker-image.yml 
+    
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,5 +28,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          script: "docker-compose up"      
-        
+          script: "docker-compose up"
