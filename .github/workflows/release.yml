@@ -31,6 +31,5 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            mv docker-compose.prod.yaml docker-compose.yaml 
-            docker-compose pull 
-            docker-compose up -d
+            mv docker-compose.prod.yaml docker-compose.yaml
+            docker compose up -d
