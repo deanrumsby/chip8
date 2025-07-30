@@ -1,7 +1,7 @@
 services:
   web:
     image: deanrumsby/chip8:latest
-    build:
-      target: prod
+    restart: always
+    pull_policy: always
     ports:
       - "80:80"
