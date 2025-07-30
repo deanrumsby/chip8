@@ -5,7 +5,7 @@ on:
     
 jobs:
   build:
-    uses: deanrumsby/chip8/.github/workflows/docker-image.yml 
+    uses: ./.github/workflows/docker-image.yml 
     
   deploy:
     needs: build
