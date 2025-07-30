@@ -22,7 +22,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           source: "docker-compose.prod.yaml"
-          target: "./docker-compose.yaml"
+          target: "./"
       - name: Restart daemon
         uses: appleboy/ssh-action@v1
         with:
