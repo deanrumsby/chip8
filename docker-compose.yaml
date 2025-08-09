@@ -1,6 +1,5 @@
 services:
   web:
-    image: deanrumsby/chip8:dev
     build:
       target: dev
     ports:
