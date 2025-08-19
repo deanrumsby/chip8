@@ -29,6 +29,8 @@ function handleFileSelect(event: Event) {
 </script>
 
 <template>
+  <UApp>
+
   <button :disabled="!$chip8Ready" @click="openFilePicker">
     Load & Disassemble Program
   </button>
@@ -42,4 +44,9 @@ function handleFileSelect(event: Event) {
   >
 
   <p v-if="!$chip8Ready">Loading CHIP-8...</p>
+
+  <div class="h-[100px] w-[100px] bg-[#53595b]">
+    hi
+  </div>
+</UApp>
 </template>
