@@ -1,2 +1,18 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+
+:root {
+    --hp48-case: #53595b;
+    --hp48-screen: #7d8c7d;
+    --hp48-button: #3a3a3e;
+    
+    --ui-bg: var(--hp48-case);
+    --ui-primary: var(--hp48-button);
+    --ui-text-inverted: #ffffff;
+}
+
+@theme static {
+    --color-hp48-case: var(--hp48-case);
+    --color-hp48-screen: var(--hp48-screen);
+    --color-hp48-button: var(--hp48-button);
+}
