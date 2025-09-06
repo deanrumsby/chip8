@@ -7,31 +7,47 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
+    <link
+        rel="stylesheet"
+        href="index.css"
+    >
+
     <title>Chip8</title>
 
     <script
         type="module"
-        src="./index.js"
+        src="index.js"
     ></script>
 </head>
 
 <body>
-    <canvas
-        style="border: 1px solid black"
-        height="320"
-        width="640"
-    ></canvas>
+    <div class="app">
+        <div>
+            <canvas
+                class="screen"
+                height="320"
+                width="640"
+            ></canvas>
 
-    <div>
-        <label for="load">Load:</label>
-        <input
-            type="file"
-            id="load"
-            name="load"
-            accept=".ch8"
-        />
+            <div>
+                <label for="load">Load:</label>
+                <input
+                    type="file"
+                    id="load"
+                    name="load"
+                    accept=".ch8"
+                />
+            </div>
+        </div>
+
+        <div id="disassembly-viewer">
+            <ul
+                id="disassembly-lines"
+                class="disassembly-lines"
+            >
+            </ul>
+        </div>
     </div>
-
 </body>
 
 </html>

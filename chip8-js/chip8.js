@@ -27,7 +27,7 @@ class Chip8 {
         const memory = new Uint8Array(this.memory);
         memory.set(bytes, PROG_START);
         console.log('memory', this.memory);
-        console.log('fetch', this.fetch());
+        console.log('disassembled', this.disassemble());
     }
 
     step() {
@@ -43,6 +43,22 @@ class Chip8 {
 
     execute(instruction) {
         return;
+    }
+
+    disassemble() {
+        const result = [];
+        let offset = PROG_START;
+        while (offset < this.memory.byteLength) {
+            const u16 = this.view.getUint16(offset);
+            const instruction = new Instruction(u16);
+            if (instruction.type) {
+                const formattedOffset = offset.toString(16).toUpperCase().padStart(4, '0');
+                result.push(`$${formattedOffset}: ${instruction.mnemonic()}`);
+
+            }
+            offset += 2;
+        }
+        return result;
     }
 }
 

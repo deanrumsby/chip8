@@ -1,0 +1,16 @@
+.app {
+    display: flex;
+    gap: 2rem;
+}
+
+.screen {
+    border: 1px solid black;
+}
+
+.disassembly-lines {
+    list-style: none;
+}
+
+.current-instruction {
+    color: red;
+}

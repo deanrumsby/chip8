@@ -5,11 +5,18 @@ class Instruction {
     }
 
     decode(value) {
+        if (!value) return;
+
         const opcode = (value & 0xf000) >> 12;
+        const n = this.value & 0x000f;
 
         switch (opcode) {
             case 0x0: {
-                return "00E0";
+                switch (n) {
+                    case 0x0: {
+                        return "00E0";
+                    }
+                }
             }
             case 0x1: {
                 return "1NNN";
@@ -27,6 +34,31 @@ class Instruction {
                 return "DXYN";
             }
         };
+    }
+
+    mnemonic() {
+        const format = (value, width) => value.toString(16).toUpperCase().padStart(width, '0');
+
+        switch (this.type) {
+            case "00E0": {
+                return "CLS";
+            }
+            case "1NNN": {
+                return `JMP $${format(this.nnn(), 4)}`;
+            }
+            case "6XNN": {
+                return `SET V${format(this.x(), 1)} $${format(this.nn(), 2)}`;
+            }
+            case "7XNN": {
+                return `ADD V${format(this.x(), 1)} $${format(this.nn(), 2)}`;
+            }
+            case "ANNN": {
+                return `SET I $${format(this.nnn(), 4)}`;
+            }
+            case "DXYN": {
+                return `DRAW V${format(this.x(), 1)} V${format(this.y(), 1)} #${this.n()}`;
+            }
+        }
     }
 
     opcode() {
