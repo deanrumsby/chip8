@@ -8,6 +8,10 @@ const stepButton = document.querySelector('#step');
 const disassemblyViewer = document.querySelector('#disassembly-viewer');
 const registersViewer = document.querySelector('#registers-viewer');
 
+/**
+ * Loads the program selected by the user into the Chip 8
+ * @param {Event} event 
+ */
 async function handleFileSelection(event) {
     const file = event.target.files[0];
     const buffer = await file.arrayBuffer();
@@ -16,16 +20,25 @@ async function handleFileSelection(event) {
     updateUi();
 }
 
+/**
+ * Steps the emulator
+ */
 function handleStep() {
     chip8.step();
     updateUi();
 }
 
+/**
+ * Updates all UI elements
+ */
 function updateUi() {
     updateDisassemblyViewer();
     updateRegistersViewer();
 }
 
+/**
+ * Updates the Disassembly Viewer UI
+ */
 function updateDisassemblyViewer() {
     const disassembly = chip8.disassemble();
     const list = disassemblyViewer.querySelector('#disassembly-list');
@@ -44,6 +57,9 @@ function updateDisassemblyViewer() {
     list.replaceChildren(...lines);
 }
 
+/**
+ * Updates the Register Viewer UI
+ */
 function updateRegistersViewer() {
     const list = registersViewer.querySelector('#registers-list');
 

@@ -29,21 +29,18 @@ class Chip8 {
         memory.set(bytes, PROG_START);
     }
 
+    /**
+     * Steps the emulator through one execution cycle
+     */
     step() {
-        const instruction = this.fetch();
-        this.execute(instruction);
+        const instruction = this.#fetch();
+        this.#execute(instruction);
     }
 
-    fetch() {
-        const u16 = this.view.getUint16(this.pc);
-        this.pc += 2;
-        return new Instruction(u16);
-    }
-
-    execute(instruction) {
-        return;
-    }
-
+    /**
+     * Disassembles the currently loaded program into an array of lines
+     * @returns {string[]}
+     */
     disassemble() {
         const result = [];
         let offset = PROG_START;
@@ -56,6 +53,16 @@ class Chip8 {
             offset += 2;
         }
         return result;
+    }
+
+    #fetch() {
+        const u16 = this.view.getUint16(this.pc);
+        this.pc += 2;
+        return new Instruction(u16);
+    }
+
+    #execute(instruction) {
+        return;
     }
 }
 

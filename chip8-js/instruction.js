@@ -3,10 +3,85 @@ import { formatHex, formatDec } from "./utils.js";
 class Instruction {
     constructor(value) {
         this.value = value;
-        this.type = this.decode(value);
+        this.type = this.#decode(value);
     }
 
-    decode(value) {
+    /**
+     * Returns the human readable mnemonic for the instruction
+     * @returns {string}
+     */
+    mnemonic() {
+        switch (this.type) {
+            case "00E0": {
+                return "CLS";
+            }
+            case "1NNN": {
+                return `JMP ${formatHex(this.nnn(), 4)}`;
+            }
+            case "6XNN": {
+                return `SET V${formatHex(this.x(), 1, false)} ${formatHex(this.nn(), 2)}`;
+            }
+            case "7XNN": {
+                return `ADD V${formatHex(this.x(), 1, false)} ${formatHex(this.nn(), 2)}`;
+            }
+            case "ANNN": {
+                return `SET I ${formatHex(this.nnn(), 4)}`;
+            }
+            case "DXYN": {
+                return `DRAW V${formatHex(this.x(), 1, false)} V${formatHex(this.y(), 1, false)} ${formatDec(this.n(), 2)}`;
+            }
+        }
+    }
+
+    /**
+     * Returns the first nibble of the instruction
+     * @returns {number}
+     */
+    opcode() {
+        return (this.value & 0xf000) >> 12;
+    }
+
+    /**
+     * Returns the second nibble of the instruction
+     * @returns {number}
+     */
+    x() {
+        return (this.value & 0x0f00) >> 8;
+    }
+
+    /**
+     * Returns the third nibble of the instruction
+     * @returns {number}
+     */
+    y() {
+        return (this.value & 0x00f0) >> 4;
+    }
+
+    /**
+     * Returns the last three nibbles of the instruction
+     * @returns {number}
+     */
+    nnn() {
+        return this.value & 0x0fff;
+    }
+
+    /**
+     * Returns the last two nibbles of the instruction 
+     * @returns {number}
+     */
+    nn() {
+        return this.value & 0x00ff;
+    }
+
+    /**
+     * Returns the last nibble of the instruction
+     * @returns {number}
+     */
+    n() {
+        return this.value & 0x000f;
+    }
+
+    #decode(value) {
         if (!value) return;
 
         const opcode = (value & 0xf000) >> 12;
@@ -38,52 +113,7 @@ class Instruction {
         };
     }
 
-    mnemonic() {
-        switch (this.type) {
-            case "00E0": {
-                return "CLS";
-            }
-            case "1NNN": {
-                return `JMP ${formatHex(this.nnn(), 4)}`;
-            }
-            case "6XNN": {
-                return `SET V${formatHex(this.x(), 1, false)} ${formatHex(this.nn(), 2)}`;
-            }
-            case "7XNN": {
-                return `ADD V${formatHex(this.x(), 1, false)} ${formatHex(this.nn(), 2)}`;
-            }
-            case "ANNN": {
-                return `SET I ${formatHex(this.nnn(), 4)}`;
-            }
-            case "DXYN": {
-                return `DRAW V${formatHex(this.x(), 1, false)} V${formatHex(this.y(), 1, false)} ${formatDec(this.n(), 2)}`;
-            }
-        }
-    }
 
-    opcode() {
-        return (this.value & 0xf000) >> 12;
-    }
-
-    x() {
-        return (this.value & 0x0f00) >> 8;
-    }
-
-    y() {
-        return (this.value & 0x00f0) >> 4;
-    }
-
-    nnn() {
-        return this.value & 0x0fff;
-    }
-
-    nn() {
-        return this.value & 0x00ff;
-    }
-
-    n() {
-        return this.value & 0x000f;
-    }
 }
 
 export default Instruction;
