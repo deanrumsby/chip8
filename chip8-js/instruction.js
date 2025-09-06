@@ -1,3 +1,5 @@
+import { formatHex, formatDec } from "./utils.js";
+
 class Instruction {
     constructor(value) {
         this.value = value;
@@ -37,26 +39,24 @@ class Instruction {
     }
 
     mnemonic() {
-        const format = (value, width) => value.toString(16).toUpperCase().padStart(width, '0');
-
         switch (this.type) {
             case "00E0": {
                 return "CLS";
             }
             case "1NNN": {
-                return `JMP $${format(this.nnn(), 4)}`;
+                return `JMP ${formatHex(this.nnn(), 4)}`;
             }
             case "6XNN": {
-                return `SET V${format(this.x(), 1)} $${format(this.nn(), 2)}`;
+                return `SET V${formatHex(this.x(), 1, false)} ${formatHex(this.nn(), 2)}`;
             }
             case "7XNN": {
-                return `ADD V${format(this.x(), 1)} $${format(this.nn(), 2)}`;
+                return `ADD V${formatHex(this.x(), 1, false)} ${formatHex(this.nn(), 2)}`;
             }
             case "ANNN": {
-                return `SET I $${format(this.nnn(), 4)}`;
+                return `SET I ${formatHex(this.nnn(), 4)}`;
             }
             case "DXYN": {
-                return `DRAW V${format(this.x(), 1)} V${format(this.y(), 1)} #${this.n()}`;
+                return `DRAW V${formatHex(this.x(), 1, false)} V${formatHex(this.y(), 1, false)} ${formatDec(this.n(), 2)}`;
             }
         }
     }

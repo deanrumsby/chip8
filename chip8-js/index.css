@@ -7,7 +7,15 @@
     border: 1px solid black;
 }
 
-.disassembly-lines {
+.disassembly-list {
+    list-style: none;
+}
+
+.registers-list {
+    display: flex;
+    gap: 0.5rem 1rem;
+    flex-wrap: wrap;
+    width: 32rem;
     list-style: none;
 }
 

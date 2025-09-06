@@ -1,4 +1,5 @@
 import Instruction from './instruction.js';
+import { formatHex } from './utils.js';
 
 const V_REG_COUNT = 16;
 const STACK_SIZE = 16;
@@ -26,8 +27,6 @@ class Chip8 {
     load(bytes) {
         const memory = new Uint8Array(this.memory);
         memory.set(bytes, PROG_START);
-        console.log('memory', this.memory);
-        console.log('disassembled', this.disassemble());
     }
 
     step() {
@@ -52,9 +51,7 @@ class Chip8 {
             const u16 = this.view.getUint16(offset);
             const instruction = new Instruction(u16);
             if (instruction.type) {
-                const formattedOffset = offset.toString(16).toUpperCase().padStart(4, '0');
-                result.push(`$${formattedOffset}: ${instruction.mnemonic()}`);
-
+                result.push(`${formatHex(offset, 4)}: ${instruction.mnemonic()}`);
             }
             offset += 2;
         }
