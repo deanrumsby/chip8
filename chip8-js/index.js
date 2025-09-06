@@ -46,36 +46,32 @@ function updateDisassemblyViewer() {
 
 function updateRegistersViewer() {
     const list = registersViewer.querySelector('#registers-list');
+
     const registers = [];
 
-    const pc = document.createElement('li');
-    pc.textContent = `PC: ${formatHex(chip8.pc, 4)}`;
-    registers.push(pc)
+    const specialRegisters = [
+        { name: 'PC', width: 4, value: chip8.pc },
+        { name: 'I', width: 4, value: chip8.i },
+        { name: 'SP', width: 2, value: chip8.sp },
+        { name: 'DT', width: 2, value: chip8.dt },
+        { name: 'ST', width: 2, value: chip8.st },
+    ];
 
-    const i = document.createElement('li');
-    i.textContent = `I: ${formatHex(chip8.i, 4)}`;
-    registers.push(i);
+    const generalRegisters = chip8.v;
 
-    const sp = document.createElement('li');
-    sp.textContent = `SP: ${formatHex(chip8.sp, 2)}`;
-    registers.push(sp);
+    specialRegisters.forEach((register) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${register.name}: ${formatHex(register.value, register.width)}`;
+        registers.push(listItem);
+    });
 
-    const dt = document.createElement('li');
-    dt.textContent = `DT: ${formatHex(chip8.dt, 2)}`;
-    registers.push(dt);
+    generalRegisters.forEach((value, index) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `V${formatHex(index, 1, false)}: ${formatHex(value, 2)}`;
+        registers.push(listItem);
+    });
 
-    const st = document.createElement('li');
-    st.textContent = `ST: ${formatHex(chip8.st, 2)}`;
-    registers.push(st);
-
-    const v = [];
-    for (let i = 0; i < 16; i++) {
-        const reg = document.createElement('li');
-        reg.textContent = `V${formatHex(i, 1, false)}: ${formatHex(chip8.v[i], 2)}`
-        v.push(reg);
-    }
-
-    list.replaceChildren(...registers, ...v);
+    list.replaceChildren(...registers);
 }
 
 filePicker.addEventListener('change', handleFileSelection);
