@@ -3,6 +3,12 @@ import { formatHex, formatDec } from "./utils.js";
 class Instruction {
     constructor(value) {
         this.value = value;
+        this.opcode = (value & 0xf000) >> 12;
+        this.x = (value & 0x0f00) >> 8;
+        this.y = (value & 0x00f0) >> 4;
+        this.nnn = value & 0x0fff;
+        this.nn = value & 0x00ff;
+        this.n = value & 0x000f;
         this.type = this.#decode(value);
     }
 
@@ -16,80 +22,29 @@ class Instruction {
                 return "CLS";
             }
             case "1NNN": {
-                return `JMP ${formatHex(this.nnn(), 4)}`;
+                return `JMP ${formatHex(this.nnn, 4)}`;
             }
             case "6XNN": {
-                return `SET V${formatHex(this.x(), 1, false)} ${formatHex(this.nn(), 2)}`;
+                return `SET V${formatHex(this.x, 1, false)} ${formatHex(this.nn, 2)}`;
             }
             case "7XNN": {
-                return `ADD V${formatHex(this.x(), 1, false)} ${formatHex(this.nn(), 2)}`;
+                return `ADD V${formatHex(this.x, 1, false)} ${formatHex(this.nn, 2)}`;
             }
             case "ANNN": {
-                return `SET I ${formatHex(this.nnn(), 4)}`;
+                return `SET I ${formatHex(this.nnn, 4)}`;
             }
             case "DXYN": {
-                return `DRAW V${formatHex(this.x(), 1, false)} V${formatHex(this.y(), 1, false)} ${formatDec(this.n(), 2)}`;
+                return `DRAW V${formatHex(this.x, 1, false)} V${formatHex(this.y, 1, false)} ${formatDec(this.n, 2)}`;
             }
         }
-    }
-
-    /**
-     * Returns the first nibble of the instruction
-     * @returns {number}
-     */
-    opcode() {
-        return (this.value & 0xf000) >> 12;
-    }
-
-    /**
-     * Returns the second nibble of the instruction
-     * @returns {number}
-     */
-    x() {
-        return (this.value & 0x0f00) >> 8;
-    }
-
-    /**
-     * Returns the third nibble of the instruction
-     * @returns {number}
-     */
-    y() {
-        return (this.value & 0x00f0) >> 4;
-    }
-
-    /**
-     * Returns the last three nibbles of the instruction
-     * @returns {number}
-     */
-    nnn() {
-        return this.value & 0x0fff;
-    }
-
-    /**
-     * Returns the last two nibbles of the instruction 
-     * @returns {number}
-     */
-    nn() {
-        return this.value & 0x00ff;
-    }
-
-    /**
-     * Returns the last nibble of the instruction
-     * @returns {number}
-     */
-    n() {
-        return this.value & 0x000f;
     }
 
     #decode(value) {
         if (!value) return;
 
-        const opcode = (value & 0xf000) >> 12;
-        const n = this.value & 0x000f;
-
-        switch (opcode) {
+        switch (this.opcode) {
             case 0x0: {
-                switch (n) {
+                switch (this.n) {
                     case 0x0: {
                         return "00E0";
                     }

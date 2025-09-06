@@ -62,7 +62,31 @@ class Chip8 {
     }
 
     #execute(instruction) {
-        return;
+        const { type, x, y, nnn, nn, n } = instruction;
+
+        switch (type) {
+            case '00E0': {
+                break;
+            }
+            case '1NNN': {
+                this.pc = nnn;
+                break;
+            }
+            case '6XNN': {
+                this.v[x] = nn;
+                break;
+            }
+            case '7XNN': {
+                this.v[x] = (this.v[x] + nn) & 0xff;
+                break;
+            }
+            case 'ANNN': {
+                break;
+            }
+            case 'DXYN': {
+                break;
+            }
+        }
     }
 }
 
