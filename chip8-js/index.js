@@ -1,12 +1,14 @@
 import Chip8 from './chip8.js';
 import { formatHex } from './utils.js';
 
-const chip8 = new Chip8();
-
+const screen = document.querySelector('#screen');
 const filePicker = document.querySelector('#load');
 const stepButton = document.querySelector('#step');
+const resetButton = document.querySelector('#reset');
 const disassemblyViewer = document.querySelector('#disassembly-viewer');
 const registersViewer = document.querySelector('#registers-viewer');
+
+const chip8 = new Chip8(screen);
 
 /**
  * Loads the program selected by the user into the Chip 8
@@ -25,6 +27,14 @@ async function handleFileSelection(event) {
  */
 function handleStep() {
     chip8.step();
+    updateUi();
+}
+
+/**
+ * Resets the emulator
+ */
+function handleReset() {
+    chip8.reset();
     updateUi();
 }
 
@@ -92,5 +102,6 @@ function updateRegistersViewer() {
 
 filePicker.addEventListener('change', handleFileSelection);
 stepButton.addEventListener('click', handleStep);
+resetButton.addEventListener('click', handleReset);
 
 updateUi();
