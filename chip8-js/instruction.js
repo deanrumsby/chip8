@@ -25,10 +25,10 @@ class Instruction {
                 return `JMP ${formatHex(this.nnn, 4)}`;
             }
             case "6XNN": {
-                return `SET V${formatHex(this.x, 1, false)} ${formatHex(this.nn, 2)}`;
+                return `SET V${formatHex(this.x, 1, false)} ${formatDec(this.nn, 2)}`;
             }
             case "7XNN": {
-                return `ADD V${formatHex(this.x, 1, false)} ${formatHex(this.nn, 2)}`;
+                return `ADD V${formatHex(this.x, 1, false)} ${formatDec(this.nn, 2)}`;
             }
             case "ANNN": {
                 return `SET I ${formatHex(this.nnn, 4)}`;

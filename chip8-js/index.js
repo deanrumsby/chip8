@@ -1,5 +1,5 @@
 import Chip8 from './chip8.js';
-import { formatHex } from './utils.js';
+import { formatHex, formatDec } from './utils.js';
 
 const screen = document.querySelector('#screen');
 const filePicker = document.querySelector('#load');
@@ -76,24 +76,25 @@ function updateRegistersViewer() {
     const registers = [];
 
     const specialRegisters = [
-        { name: 'PC', width: 4, value: chip8.pc },
-        { name: 'I', width: 4, value: chip8.i },
-        { name: 'SP', width: 2, value: chip8.sp },
-        { name: 'DT', width: 2, value: chip8.dt },
-        { name: 'ST', width: 2, value: chip8.st },
+        { name: 'PC', width: 4, value: chip8.pc, format: 'hex' },
+        { name: 'I', width: 4, value: chip8.i, format: 'hex' },
+        { name: 'SP', width: 2, value: chip8.sp, format: 'dec' },
+        { name: 'DT', width: 2, value: chip8.dt, format: 'dec' },
+        { name: 'ST', width: 2, value: chip8.st, format: 'dec' },
     ];
 
     const generalRegisters = chip8.v;
 
     specialRegisters.forEach((register) => {
         const listItem = document.createElement('li');
-        listItem.textContent = `${register.name}: ${formatHex(register.value, register.width)}`;
+        const formattedValue = register.format === 'hex' ? formatHex(register.value, register.width) : formatDec(register.value, register.width);
+        listItem.textContent = `${register.name}: ${formattedValue}`;
         registers.push(listItem);
     });
 
     generalRegisters.forEach((value, index) => {
         const listItem = document.createElement('li');
-        listItem.textContent = `V${formatHex(index, 1, false)}: ${formatHex(value, 2)}`;
+        listItem.textContent = `V${formatHex(index, 1, false)}: ${formatDec(value, 2)}`;
         registers.push(listItem);
     });
 
