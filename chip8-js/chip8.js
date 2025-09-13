@@ -7,6 +7,7 @@ const MEMORY_SIZE = 4096;
 const PROG_START = 0x200;
 const FRAME_HEIGHT = 32;
 const FRAME_WIDTH = 64;
+const DEFAULT_SPEED = 1000 / 700;
 
 class Chip8 {
     pc = PROG_START;
@@ -18,6 +19,7 @@ class Chip8 {
     stack = new Array(STACK_SIZE).fill(0);
     memory = new ArrayBuffer(MEMORY_SIZE);
     program = undefined;
+    speed = DEFAULT_SPEED;
 
     /**
      * Creates a new instance of the Chip8
@@ -37,6 +39,18 @@ class Chip8 {
         const memory = new Uint8Array(this.memory);
         memory.set(bytes, PROG_START);
         this.program = bytes;
+    }
+
+    /**
+     * Progresses the state of the emulation by a duration of time.
+     * @param {DOMHighResTimeStamp} duration 
+     */
+    emulate(duration) {
+        const stepsRequired = Math.floor(duration / this.speed);
+
+        for (let i = 0; i < stepsRequired; i += 1) {
+            this.step();
+        }
     }
 
     /**
