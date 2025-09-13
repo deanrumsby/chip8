@@ -132,20 +132,17 @@ class Chip8 {
                 for (let i = 0; i < n; i += 1) {
                     let byte = this.view.getUint8(this.i + i);
 
-                    for (let j = 1; j < sw + 1; j += 1) {
+                    for (let j = sw - 1; j >= 0; j -= 1) {
                         const bit = byte & 1;
                         const spritePixelAlpha = bit === 1 ? 255 : 0;
                         byte = byte >> 1;
 
-                        const pixelOffset = ((i + 1) * 4 * sw) - (j * 4)
+                        const pixelOffset = (i * 4 * sw) + (j * 4)
                         const pixelAlphaOffset = pixelOffset + 3;
                         const pixelAlpha = imageData.data[pixelAlphaOffset];
                         imageData.data[pixelAlphaOffset] = spritePixelAlpha ^ pixelAlpha;
                     }
                 }
-
-
-                console.log('image', imageData.data);
 
                 this.ctx.putImageData(imageData, sx, sy);
                 break;
