@@ -24,7 +24,9 @@ async function handleFileSelection(event) {
     updateUi();
 }
 
-
+/**
+ * Starts the emulation
+ */
 function play() {
     if (!chip8.program) return;
 
@@ -48,6 +50,9 @@ function play() {
     window.requestAnimationFrame(emulate);
 }
 
+/**
+ * Pauses the emulation
+ */
 function pause() {
     isRunning = false;
 }
