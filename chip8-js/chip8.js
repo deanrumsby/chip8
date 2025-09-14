@@ -119,9 +119,34 @@ class Chip8 {
                 this.#clearScreen();
                 break;
             }
+            case '00EE': {
+                const address = this.stack[this.sp];
+                this.sp -= 1;
+                this.pc = address;
+            }
             case '1NNN': {
                 this.pc = nnn;
                 break;
+            }
+            case '2NNN': {
+                this.sp += 1;
+                this.stack[this.sp] = this.pc;
+                this.pc = nnn;
+            }
+            case '3XNN': {
+                if (this.v[x] === nn) {
+                    this.pc += 2;
+                }
+            }
+            case '4XNN': {
+                if (this.v[x] !== nn) {
+                    this.pc += 2;
+                }
+            }
+            case '5XY0': {
+                if (this.v[x] === this.v[y]) {
+                    this.pc += 2;
+                }
             }
             case '6XNN': {
                 this.v[x] = nn;
@@ -129,6 +154,45 @@ class Chip8 {
             }
             case '7XNN': {
                 this.v[x] = (this.v[x] + nn) & 0xff;
+                break;
+            }
+            case '8XY0': {
+                this.v[x] = this.v[y];
+                break;
+            }
+            case '8XY1': {
+                this.v[x] = (this.v[x] | this.v[y]) & 0xff;
+                break;
+            }
+            case '8XY2': {
+                this.v[x] = (this.v[x] & this.v[y]) & 0xff;
+                break;
+            }
+            case '8XY3': {
+                this.v[x] = (this.v[x] ^ this.v[y]) & 0xff;
+                break;
+            }
+            case '8XY4': {
+                const sum = this.v[x] + this.v[y];
+                this.v[x] = sum & 0xff;
+                this.v[0xf] = sum > 0xff ? 1 : 0;
+                break;
+            }
+            case '8XY5': {
+                const difference = this.v[x] - this.v[y];
+                this.v[x] = difference & 0xff;
+                this.v[0xf] = difference > 0 ? 1 : 0;
+                break;
+            }
+            case '8XY6': {
+                this.v[0xf] = this.v[x] & 0x1;
+                this.v[x] = this.v[x] >> 1;
+                break;
+            }
+            case '8XY7': {
+                const difference = this.v[y] - this.v[x];
+                this.v[x] = difference & 0xff;
+                this.v[0xf] = difference > 0 ? 1 : 0;
                 break;
             }
             case 'ANNN': {

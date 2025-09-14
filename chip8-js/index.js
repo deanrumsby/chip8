@@ -132,9 +132,9 @@ function updateRegistersViewer() {
     const specialRegisters = [
         { name: 'PC', width: 4, value: chip8.pc, format: 'hex' },
         { name: 'I', width: 4, value: chip8.i, format: 'hex' },
-        { name: 'SP', width: 2, value: chip8.sp, format: 'dec' },
-        { name: 'DT', width: 2, value: chip8.dt, format: 'dec' },
-        { name: 'ST', width: 2, value: chip8.st, format: 'dec' },
+        { name: 'SP', width: 3, value: chip8.sp, format: 'dec' },
+        { name: 'DT', width: 3, value: chip8.dt, format: 'dec' },
+        { name: 'ST', width: 3, value: chip8.st, format: 'dec' },
     ];
 
     const generalRegisters = chip8.v;
@@ -148,7 +148,7 @@ function updateRegistersViewer() {
 
     generalRegisters.forEach((value, index) => {
         const listItem = document.createElement('li');
-        listItem.textContent = `V${formatHex(index, 1, false)}: ${formatDec(value, 2)}`;
+        listItem.textContent = `V${formatHex(index, 1, false)}: ${formatDec(value, 3)}`;
         registers.push(listItem);
     });
 
