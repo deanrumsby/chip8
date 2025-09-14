@@ -8,6 +8,7 @@ const PROG_START = 0x200;
 const FRAME_HEIGHT = 32;
 const FRAME_WIDTH = 64;
 const DEFAULT_SPEED = 1000 / 700;
+const KEY_COUNT = 16;
 
 class Chip8 {
     pc = PROG_START;
@@ -20,6 +21,7 @@ class Chip8 {
     memory = new ArrayBuffer(MEMORY_SIZE);
     program = undefined;
     speed = DEFAULT_SPEED;
+    keys = new Array(KEY_COUNT).fill(false);
 
     /**
      * Creates a new instance of the Chip8
@@ -79,6 +81,15 @@ class Chip8 {
         }
 
         this.#clearScreen();
+    }
+
+    /**
+     * Sets the state for a given key
+     * @param {number} key 
+     * @param {boolean} state 
+     */
+    setKeyState(key, state) {
+        this.keys[key] = state;
     }
 
     /**
@@ -247,6 +258,18 @@ class Chip8 {
                 }
 
                 this.ctx.putImageData(imageData, sx, sy);
+                break;
+            }
+            case 'EX9E': {
+                if (this.keys[this.v[x]]) {
+                    this.pc += 2;
+                }
+                break;
+            }
+            case 'EXA1': {
+                if (!this.keys[this.v[x]]) {
+                    this.pc += 2;
+                }
                 break;
             }
         }

@@ -9,8 +9,64 @@ const resetButton = document.querySelector('#reset');
 const disassemblyViewer = document.querySelector('#disassembly-viewer');
 const registersViewer = document.querySelector('#registers-viewer');
 
+const key1 = document.querySelector('#key1');
+const key2 = document.querySelector('#key2');
+const key3 = document.querySelector('#key3');
+const keyC = document.querySelector('#keyC');
+const key4 = document.querySelector('#key4');
+const key5 = document.querySelector('#key5');
+const key6 = document.querySelector('#key6');
+const keyD = document.querySelector('#keyD');
+const key7 = document.querySelector('#key7');
+const key8 = document.querySelector('#key8');
+const key9 = document.querySelector('#key9');
+const keyE = document.querySelector('#keyE');
+const keyA = document.querySelector('#keyA');
+const key0 = document.querySelector('#key0');
+const keyB = document.querySelector('#keyB');
+const keyF = document.querySelector('#keyF');
+
+
 const chip8 = new Chip8(screen);
 let isRunning = false;
+
+const KEY_CODES = {
+    'Digit1': 0x1,
+    'Digit2': 0x2,
+    'Digit3': 0x3,
+    'Digit4': 0xc,
+    'KeyQ': 0x4,
+    'KeyW': 0x5,
+    'KeyE': 0x6,
+    'KeyR': 0xd,
+    'KeyA': 0x7,
+    'KeyS': 0x8,
+    'KeyD': 0x9,
+    'KeyF': 0xe,
+    'KeyZ': 0xa,
+    'KeyX': 0x0,
+    'KeyC': 0xb,
+    'KeyV': 0xf,
+}
+
+const keyButtons = [
+    key0,
+    key1,
+    key2,
+    key3,
+    key4,
+    key5,
+    key6,
+    key7,
+    key8,
+    key9,
+    keyA,
+    keyB,
+    keyC,
+    keyD,
+    keyE,
+    keyF,
+];
 
 /**
  * Loads the program selected by the user into the Chip 8
@@ -69,6 +125,30 @@ function handlePlayPause() {
 }
 
 /**
+ * Handles a key being pressed
+ * @param {Event} event 
+ */
+function handleKeyDown(event) {
+    const key = KEY_CODES[event.code];
+    if (key !== undefined) {
+        chip8.setKeyState(key, true);
+    }
+    updateButtons();
+}
+
+/**
+ * Handles a key being released
+ * @param {Event} event 
+ */
+function handleKeyUp(event) {
+    const key = KEY_CODES[event.code];
+    if (key !== undefined) {
+        chip8.setKeyState(key, false);
+    }
+    updateButtons();
+}
+
+/**
  * Steps the emulator
  */
 function handleStep() {
@@ -98,6 +178,15 @@ function updateUi() {
  */
 function updateButtons() {
     playPauseButton.textContent = isRunning ? 'Pause' : 'Play';
+
+    chip8.keys.forEach((isPressed, key) => {
+        const button = keyButtons[key];
+        if (isPressed) {
+            button.classList.add('key-pressed');
+        } else {
+            button.classList.remove('key-pressed');
+        }
+    })
 }
 
 /**
@@ -159,5 +248,8 @@ filePicker.addEventListener('change', handleFileSelection);
 playPauseButton.addEventListener('click', handlePlayPause);
 stepButton.addEventListener('click', handleStep);
 resetButton.addEventListener('click', handleReset);
+
+window.addEventListener('keydown', handleKeyDown);
+window.addEventListener('keyup', handleKeyUp);
 
 updateUi();

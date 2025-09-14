@@ -87,6 +87,12 @@ class Instruction {
             case "DXYN": {
                 return `DRAW V${formatHex(this.x, 1, false)} V${formatHex(this.y, 1, false)} ${formatDec(this.n, 2)}`;
             }
+            case "EX9E": {
+                return `SKP V${formatHex(this.x, 1, false)}`;
+            }
+            case "EXA1": {
+                return `SKNP V${formatHex(this.x, 1, false)}`;
+            }
         }
     }
 
@@ -170,6 +176,16 @@ class Instruction {
             }
             case 0xd: {
                 return "DXYN";
+            }
+            case 0xe: {
+                switch (this.n) {
+                    case 0x1: {
+                        return "EXA1"
+                    }
+                    case 0xe: {
+                        return "EX9E";
+                    }
+                }
             }
         };
     }
