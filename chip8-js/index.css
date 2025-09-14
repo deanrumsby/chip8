@@ -11,6 +11,11 @@
     image-rendering: pixelated;
 }
 
+.disassembly-viewer {
+    max-height: 90vh;
+    overflow-y: scroll;
+}
+
 .disassembly-list {
     list-style: none;
 }

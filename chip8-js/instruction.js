@@ -69,8 +69,20 @@ class Instruction {
             case "8XY7": {
                 return `SUBN V${formatHex(this.x, 1, false)}, V${formatHex(this.y, 1, false)}`;
             }
+            case "8XYE": {
+                return `SHL V${formatHex(this.x, 1, false)} {, V${formatHex(this.y, 1, false)}}`;
+            }
+            case "9XY0": {
+                return `SNE V${formatHex(this.x, 1, false)}, V${formatHex(this.y, 1, false)}`;
+            }
             case "ANNN": {
                 return `SET I ${formatHex(this.nnn, 4)}`;
+            }
+            case "BNNN": {
+                return `JP V0, ${formatHex(this.nnn, 4)}`;
+            }
+            case "CXNN": {
+                return `RND V${formatHex(this.x, 1, false)}, ${formatDec(this.nn, 3)}`;
             }
             case "DXYN": {
                 return `DRAW V${formatHex(this.x, 1, false)} V${formatHex(this.y, 1, false)} ${formatDec(this.n, 2)}`;
@@ -139,10 +151,22 @@ class Instruction {
                     case 0x7: {
                         return "8XY7";
                     }
+                    case 0xe: {
+                        return "8XYE";
+                    }
                 }
+            }
+            case 0x9: {
+                return "9XY0";
             }
             case 0xa: {
                 return "ANNN";
+            }
+            case 0xb: {
+                return "BNNN";
+            }
+            case 0xc: {
+                return "CXNN";
             }
             case 0xd: {
                 return "DXYN";

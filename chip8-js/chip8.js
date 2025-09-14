@@ -123,6 +123,7 @@ class Chip8 {
                 const address = this.stack[this.sp];
                 this.sp -= 1;
                 this.pc = address;
+                break;
             }
             case '1NNN': {
                 this.pc = nnn;
@@ -132,21 +133,25 @@ class Chip8 {
                 this.sp += 1;
                 this.stack[this.sp] = this.pc;
                 this.pc = nnn;
+                break;
             }
             case '3XNN': {
                 if (this.v[x] === nn) {
                     this.pc += 2;
                 }
+                break;
             }
             case '4XNN': {
                 if (this.v[x] !== nn) {
                     this.pc += 2;
                 }
+                break;
             }
             case '5XY0': {
                 if (this.v[x] === this.v[y]) {
                     this.pc += 2;
                 }
+                break;
             }
             case '6XNN': {
                 this.v[x] = nn;
@@ -195,8 +200,27 @@ class Chip8 {
                 this.v[0xf] = difference > 0 ? 1 : 0;
                 break;
             }
+            case '8XYE': {
+                this.v[0xf] = this.v[x] & 0x80;
+                this.v[x] = (this.v[x] << 1) & 0xff;
+                break;
+            }
+            case '9XY0': {
+                if (this.v[x] !== this.v[y]) {
+                    this.pc += 2;
+                }
+                break;
+            }
             case 'ANNN': {
                 this.i = nnn;
+                break;
+            }
+            case 'BNNN': {
+                this.pc = this.v[0] + nnn;
+                break;
+            }
+            case 'CXNN': {
+                this.v[x] = nn & Math.floor(Math.random() * 0x100);
                 break;
             }
             case 'DXYN': {
