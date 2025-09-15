@@ -62,7 +62,10 @@ function play() {
         updateUi();
 
         if (isRunning) {
+            previousTimestamp = timestamp;
             window.requestAnimationFrame(emulate);
+        } else {
+            previousTimestamp = undefined;
         }
     }
 

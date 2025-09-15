@@ -1,13 +1,17 @@
 import Instruction from './instruction.js';
+import FONT from './font.js';
 import { formatHex } from './utils.js';
 
 const V_REG_COUNT = 16;
 const STACK_SIZE = 16;
 const MEMORY_SIZE = 4096;
 const PROG_START = 0x200;
+const FONT_START = 0x050;
+const FONT_SPRITE_SIZE = 5;
 const FRAME_HEIGHT = 32;
 const FRAME_WIDTH = 64;
-const DEFAULT_SPEED = 1000 / 700;
+const DEFAULT_SPEED = 700;
+const TIMERS_FREQ = 60;
 const KEY_COUNT = 16;
 
 class Chip8 {
@@ -22,6 +26,9 @@ class Chip8 {
     program = undefined;
     speed = DEFAULT_SPEED;
     keys = new Array(KEY_COUNT).fill(false);
+    recentKeyUp = undefined;
+    stStepCount = 0;
+    dtStepCount = 0;
 
     /**
      * Creates a new instance of the Chip8
@@ -31,6 +38,8 @@ class Chip8 {
         this.view = new DataView(this.memory);
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
+        this.stepsPerTimerDec = this.#calculateStepsPerTimerDec();
+        this.#loadFont();
     }
 
     /**
@@ -48,9 +57,9 @@ class Chip8 {
      * @param {DOMHighResTimeStamp} duration 
      */
     emulate(duration) {
-        const stepsRequired = Math.floor(duration / this.speed);
+        const steps = Math.round((duration / 1000) * this.speed);
 
-        for (let i = 0; i < stepsRequired; i += 1) {
+        for (let i = 0; i < steps; i += 1) {
             this.step();
         }
     }
@@ -61,6 +70,7 @@ class Chip8 {
     step() {
         const instruction = this.#fetch();
         this.#execute(instruction);
+        this.#stepTimers();
     }
 
     /**
@@ -86,10 +96,11 @@ class Chip8 {
     /**
      * Sets the state for a given key
      * @param {number} key 
-     * @param {boolean} state 
+     * @param {boolean} isPressed 
      */
-    setKeyState(key, state) {
-        this.keys[key] = state;
+    setKeyState(key, isPressed) {
+        this.keys[key] = isPressed;
+        this.recentKeyUp = !isPressed ? key : undefined;
     }
 
     /**
@@ -108,6 +119,32 @@ class Chip8 {
             offset += 2;
         }
         return result;
+    }
+
+    #calculateStepsPerTimerDec() {
+        return Math.round(this.speed / TIMERS_FREQ);
+    }
+
+    #stepTimers() {
+        if (this.st > 0) {
+            this.stStepCount += 1;
+            if (this.stStepCount >= this.stepsPerTimerDec) {
+                this.st -= 1;
+                this.stStepCount -= this.stepsPerTimerDec;
+            }
+        }
+        if (this.dt > 0) {
+            this.dtStepCount += 1;
+            if (this.dtStepCount >= this.stepsPerTimerDec) {
+                this.dt -= 1;
+                this.dtStepCount -= this.stepsPerTimerDec;
+            }
+        }
+    }
+
+    #loadFont() {
+        const memory = new Uint8Array(this.memory);
+        memory.set(FONT, FONT_START);
     }
 
     #resetMemory() {
@@ -272,7 +309,59 @@ class Chip8 {
                 }
                 break;
             }
+            case 'FX07': {
+                this.v[x] = this.dt;
+                break;
+            }
+            case 'FX0A': {
+                if (this.recentKeyUp !== undefined) {
+                    this.v[x] = this.recentKeyUp;
+                } else {
+                    this.pc -= 2;
+                }
+                break;
+            }
+            case 'FX15': {
+                this.dt = this.v[x];
+                break;
+            }
+            case 'FX18': {
+                this.st = this.v[x];
+                break;
+            }
+            case 'FX1E': {
+                this.i = (this.i + this.v[x]) & 0xffff;
+                break;
+            }
+            case 'FX29': {
+                const digit = this.v[x] & 0xf;
+                this.i = FONT_START + (digit * FONT_SPRITE_SIZE);
+                break;
+            }
+            case 'FX33': {
+                let number = this.v[x];
+                for (let i = 2; i >= 0; i -= 1) {
+                    this.view.setUint8(this.i + i, number % 10);
+                    number = Math.floor(number / 10);
+                }
+                console.log('memory', this.memory);
+                break;
+            }
+            case 'FX55': {
+                for (let i = 0; i <= x; i += 1) {
+                    this.view.setUint8(this.i + i, this.v[i]);
+                }
+                break;
+            }
+            case 'FX65': {
+                for (let i = 0; i <= x; i += 1) {
+                    this.v[i] = this.view.getUint8(this.i + i);
+                }
+                break;
+            }
         }
+
+        this.recentKeyUp = undefined;
     }
 
     #clearScreen() {

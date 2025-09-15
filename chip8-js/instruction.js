@@ -93,6 +93,33 @@ class Instruction {
             case "EXA1": {
                 return `SKNP V${formatHex(this.x, 1, false)}`;
             }
+            case "FX07": {
+                return `LD V${formatHex(this.x, 1, false)}, DT`;
+            }
+            case "FX0A": {
+                return `LD V${formatHex(this.x, 1, false)}, K`;
+            }
+            case "FX15": {
+                return `LD DT, V${formatHex(this.x, 1, false)}`;
+            }
+            case "FX18": {
+                return `LD ST, V${formatHex(this.x, 1, false)}`;
+            }
+            case "FX1E": {
+                return `ADD I, V${formatHex(this.x, 1, false)}`;
+            }
+            case "FX29": {
+                return `LD F, V${formatHex(this.x, 1, false)}`;
+            }
+            case "FX33": {
+                return `LD B, V${formatHex(this.x, 1, false)}`;
+            }
+            case "FX55": {
+                return `LD [I], V${formatHex(this.x, 1, false)}`;
+            }
+            case "FX65": {
+                return `LD V${formatHex(this.x, 1, false)}, [I]`;
+            }
         }
     }
 
@@ -184,6 +211,37 @@ class Instruction {
                     }
                     case 0xe: {
                         return "EX9E";
+                    }
+                }
+            }
+            case 0xf: {
+                switch (this.nn) {
+                    case 0x07: {
+                        return "FX07";
+                    }
+                    case 0x0a: {
+                        return "FX0A";
+                    }
+                    case 0x15: {
+                        return "FX15";
+                    }
+                    case 0x18: {
+                        return "FX18";
+                    }
+                    case 0x1e: {
+                        return "FX1E";
+                    }
+                    case 0x29: {
+                        return "FX29";
+                    }
+                    case 0x33: {
+                        return "FX33";
+                    }
+                    case 0x55: {
+                        return "FX55";
+                    }
+                    case 0x65: {
+                        return "FX65";
                     }
                 }
             }
