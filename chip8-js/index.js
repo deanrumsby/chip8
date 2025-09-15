@@ -8,24 +8,7 @@ const stepButton = document.querySelector('#step');
 const resetButton = document.querySelector('#reset');
 const disassemblyViewer = document.querySelector('#disassembly-viewer');
 const registersViewer = document.querySelector('#registers-viewer');
-
-const key1 = document.querySelector('#key1');
-const key2 = document.querySelector('#key2');
-const key3 = document.querySelector('#key3');
-const keyC = document.querySelector('#keyC');
-const key4 = document.querySelector('#key4');
-const key5 = document.querySelector('#key5');
-const key6 = document.querySelector('#key6');
-const keyD = document.querySelector('#keyD');
-const key7 = document.querySelector('#key7');
-const key8 = document.querySelector('#key8');
-const key9 = document.querySelector('#key9');
-const keyE = document.querySelector('#keyE');
-const keyA = document.querySelector('#keyA');
-const key0 = document.querySelector('#key0');
-const keyB = document.querySelector('#keyB');
-const keyF = document.querySelector('#keyF');
-
+const keypad = document.querySelector('#keypad');
 
 const chip8 = new Chip8(screen);
 let isRunning = false;
@@ -48,25 +31,6 @@ const KEY_CODES = {
     'KeyC': 0xb,
     'KeyV': 0xf,
 }
-
-const keyButtons = [
-    key0,
-    key1,
-    key2,
-    key3,
-    key4,
-    key5,
-    key6,
-    key7,
-    key8,
-    key9,
-    keyA,
-    keyB,
-    keyC,
-    keyD,
-    keyE,
-    keyF,
-];
 
 /**
  * Loads the program selected by the user into the Chip 8
@@ -180,7 +144,7 @@ function updateButtons() {
     playPauseButton.textContent = isRunning ? 'Pause' : 'Play';
 
     chip8.keys.forEach((isPressed, key) => {
-        const button = keyButtons[key];
+        const button = keypad.querySelector(`[data-key="${key}"`)
         if (isPressed) {
             button.classList.add('key-pressed');
         } else {
