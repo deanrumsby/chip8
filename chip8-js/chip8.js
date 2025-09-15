@@ -278,6 +278,7 @@ class Chip8 {
                 const sh = n;
 
                 const imageData = this.ctx.getImageData(sx, sy, sw, sh);
+                let hasCollision = false;
 
                 for (let i = 0; i < n; i += 1) {
                     let byte = this.view.getUint8(this.i + i);
@@ -290,11 +291,19 @@ class Chip8 {
                         const pixelOffset = (i * 4 * sw) + (j * 4)
                         const pixelAlphaOffset = pixelOffset + 3;
                         const pixelAlpha = imageData.data[pixelAlphaOffset];
+
                         imageData.data[pixelAlphaOffset] = spritePixelAlpha ^ pixelAlpha;
+
+                        if (!hasCollision) {
+                            if ((spritePixelAlpha & pixelAlpha) === 0xff) {
+                                hasCollision = true;
+                            }
+                        }
                     }
                 }
 
                 this.ctx.putImageData(imageData, sx, sy);
+                this.v[0xf] = hasCollision ? 1 : 0;
                 break;
             }
             case 'EX9E': {
