@@ -108,7 +108,7 @@ class Chip8 {
      */
     setKeyState(key, isPressed) {
         this.keys[key] = isPressed;
-        this.recentKeyUp = !isPressed ? key : undefined;
+        this.#recentKeyUp = !isPressed ? key : undefined;
     }
 
     /**
@@ -224,15 +224,15 @@ class Chip8 {
                 break;
             }
             case '8XY1': {
-                this.v[x] = (this.v[x] | this.v[y]) & 0xff;
+                this.v[x] |= this.v[y];
                 break;
             }
             case '8XY2': {
-                this.v[x] = (this.v[x] & this.v[y]) & 0xff;
+                this.v[x] &= this.v[y];
                 break;
             }
             case '8XY3': {
-                this.v[x] = (this.v[x] ^ this.v[y]) & 0xff;
+                this.v[x] ^= this.v[y];
                 break;
             }
             case '8XY4': {
@@ -243,13 +243,13 @@ class Chip8 {
             }
             case '8XY5': {
                 const difference = this.v[x] - this.v[y];
-                this.v[x] = difference & 0xff;
+                this.v[x] = difference > 0 ? difference : 0x100 + difference;
                 this.v[0xf] = difference > 0 ? 1 : 0;
                 break;
             }
             case '8XY6': {
                 this.v[0xf] = this.v[x] & 0x1;
-                this.v[x] = this.v[x] >> 1;
+                this.v[x] >>= 1;
                 break;
             }
             case '8XY7': {
@@ -349,7 +349,7 @@ class Chip8 {
                 break;
             }
             case 'FX1E': {
-                this.i = (this.i + this.v[x]) & 0xffff;
+                this.i = ((this.i + this.v[x]) & 0xffff);
                 break;
             }
             case 'FX29': {
