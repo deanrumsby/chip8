@@ -13,6 +13,7 @@ const FRAME_WIDTH = 64;
 const DEFAULT_SPEED = 700;
 const TIMERS_FREQ = 60;
 const KEY_COUNT = 16;
+const SECOND_IN_MS = 1000;
 
 class Chip8 {
     pc = PROG_START;
@@ -23,12 +24,13 @@ class Chip8 {
     v = new Array(V_REG_COUNT).fill(0);
     stack = new Array(STACK_SIZE).fill(0);
     memory = new ArrayBuffer(MEMORY_SIZE);
-    program = undefined;
-    speed = DEFAULT_SPEED;
     keys = new Array(KEY_COUNT).fill(false);
-    recentKeyUp = undefined;
-    stStepCount = 0;
-    dtStepCount = 0;
+    speed = DEFAULT_SPEED;
+    #program = undefined;
+    #recentKeyUp = undefined;
+    #cycles = 0;
+    #st = 0;
+    #dt = 0;
 
     /**
      * Creates a new instance of the Chip8
@@ -36,9 +38,7 @@ class Chip8 {
      */
     constructor(canvas) {
         this.view = new DataView(this.memory);
-        this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
-        this.stepsPerTimerDec = this.#calculateStepsPerTimerDec();
         this.#loadFont();
     }
 
@@ -49,7 +49,7 @@ class Chip8 {
     load(bytes) {
         const memory = new Uint8Array(this.memory);
         memory.set(bytes, PROG_START);
-        this.program = bytes;
+        this.#program = bytes;
     }
 
     /**
@@ -57,20 +57,24 @@ class Chip8 {
      * @param {DOMHighResTimeStamp} duration 
      */
     emulate(duration) {
-        const steps = Math.round((duration / 1000) * this.speed);
+        this.#cycles += ((duration / SECOND_IN_MS) * this.speed);
+
+        const steps = Math.floor(this.#cycles);
 
         for (let i = 0; i < steps; i += 1) {
             this.step();
         }
+        this.#cycles -= steps;
     }
 
     /**
      * Steps the emulator through one execution cycle
      */
     step() {
+        this.#stepTimers();
+
         const instruction = this.#fetch();
         this.#execute(instruction);
-        this.#stepTimers();
     }
 
     /**
@@ -84,10 +88,14 @@ class Chip8 {
         this.st = 0;
         this.v.fill(0);
         this.stack.fill(0);
+        this.#recentKeyUp = undefined;
+        this.#cycles = 0;
+        this.#st = 0;
+        this.#dt = 0;
         this.#resetMemory();
 
-        if (this.program) {
-            this.load(this.program);
+        if (this.#program) {
+            this.load(this.#program);
         }
 
         this.#clearScreen();
@@ -121,25 +129,27 @@ class Chip8 {
         return result;
     }
 
-    #calculateStepsPerTimerDec() {
-        return Math.round(this.speed / TIMERS_FREQ);
+    #stepTimers() {
+        this.#stepDT();
+        this.#stepST();
     }
 
-    #stepTimers() {
-        if (this.st > 0) {
-            this.stStepCount += 1;
-            if (this.stStepCount >= this.stepsPerTimerDec) {
-                this.st -= 1;
-                this.stStepCount -= this.stepsPerTimerDec;
-            }
-        }
+    #stepDT() {
         if (this.dt > 0) {
-            this.dtStepCount += 1;
-            if (this.dtStepCount >= this.stepsPerTimerDec) {
-                this.dt -= 1;
-                this.dtStepCount -= this.stepsPerTimerDec;
-            }
+            this.#dt += ((1 / this.speed) * TIMERS_FREQ);
         }
+        const decrement = Math.floor(this.#dt);
+        this.dt -= decrement;
+        this.#dt -= decrement;
+    }
+
+    #stepST() {
+        if (this.st > 0) {
+            this.#st += ((1 / this.speed) * TIMERS_FREQ);
+        }
+        const decrement = Math.floor(this.#st);
+        this.st -= decrement;
+        this.#st -= decrement;
     }
 
     #loadFont() {
@@ -323,8 +333,8 @@ class Chip8 {
                 break;
             }
             case 'FX0A': {
-                if (this.recentKeyUp !== undefined) {
-                    this.v[x] = this.recentKeyUp;
+                if (this.#recentKeyUp !== undefined) {
+                    this.v[x] = this.#recentKeyUp;
                 } else {
                     this.pc -= 2;
                 }
@@ -353,7 +363,6 @@ class Chip8 {
                     this.view.setUint8(this.i + i, number % 10);
                     number = Math.floor(number / 10);
                 }
-                console.log('memory', this.memory);
                 break;
             }
             case 'FX55': {
@@ -370,7 +379,7 @@ class Chip8 {
             }
         }
 
-        this.recentKeyUp = undefined;
+        this.#recentKeyUp = undefined;
     }
 
     #clearScreen() {

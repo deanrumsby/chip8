@@ -48,8 +48,6 @@ async function handleFileSelection(event) {
  * Starts the emulation
  */
 function play() {
-    if (!chip8.program) return;
-
     let previousTimestamp = undefined;
 
     const emulate = (timestamp) => {
