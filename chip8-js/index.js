@@ -159,20 +159,11 @@ function updateButtons() {
  */
 function updateDisassemblyViewer() {
     const disassembly = chip8.disassemble();
-    const list = disassemblyViewer.querySelector('#disassembly-list');
 
-    const lines = disassembly.map(line => {
-        const listItem = document.createElement('li');
-        listItem.textContent = line;
+    const node = document.createElement('pre');
+    node.innerHTML = disassembly;
 
-        const offset = parseInt(line.slice(1, 5), 16);
-        if (chip8.pc === offset) {
-            listItem.classList.add('current-instruction')
-        }
-        return listItem;
-    });
-
-    list.replaceChildren(...lines);
+    disassemblyViewer.replaceChildren(node);
 }
 
 /**

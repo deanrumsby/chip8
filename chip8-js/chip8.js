@@ -116,13 +116,13 @@ class Chip8 {
      * @returns {string[]}
      */
     disassemble() {
-        const result = [];
+        let result = "";
         let offset = PROG_START;
         while (offset < this.memory.byteLength) {
             const u16 = this.view.getUint16(offset);
             const instruction = new Instruction(u16);
             if (instruction.type) {
-                result.push(`${formatHex(offset, 4)}: ${instruction.mnemonic()}`);
+                result += `${formatHex(offset, 4)}: ${instruction.mnemonic()}\n`;
             }
             offset += 2;
         }
