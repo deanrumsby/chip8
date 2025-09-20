@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <link
+        rel="stylesheet"
+        href="index.css"
+    >
+
+    <title>Chip8</title>
+
+    <script
+        type="module"
+        src="index.js"
+    ></script>
+</head>
+
+<body>
+    <div class="app">
+        <div>
+            <canvas
+                id="screen"
+                class="screen"
+                height="32"
+                width="64"
+            ></canvas>
+
+            <div>
+                <label for="load">Load:</label>
+                <input
+                    type="file"
+                    id="load"
+                    name="load"
+                    accept=".ch8"
+                />
+                <button id="play-pause">Play</button>
+                <button id="step">Step</button>
+                <button id="reset">Reset</button>
+            </div>
+
+            <div id="registers-viewer">
+                <ul
+                    id="registers-list"
+                    class="registers-list"
+                >
+                </ul>
+            </div>
+
+            <div
+                id="keypad"
+                class="keypad"
+            >
+                <button
+                    class="key"
+                    data-key="1"
+                >1</button>
+                <button
+                    class="key"
+                    data-key="2"
+                >2</button>
+                <button
+                    class="key"
+                    data-key="3"
+                >3</button>
+                <button
+                    class="key"
+                    data-key="12"
+                >C</button>
+                <button
+                    class="key"
+                    data-key="4"
+                >4</button>
+                <button
+                    class="key"
+                    data-key="5"
+                >5</button>
+                <button
+                    class="key"
+                    data-key="6"
+                >6</button>
+                <button
+                    class="key"
+                    data-key="13"
+                >D</button>
+                <button
+                    class="key"
+                    data-key="7"
+                >7</button>
+                <button
+                    class="key"
+                    data-key="8"
+                >8</button>
+                <button
+                    class="key"
+                    data-key="9"
+                >9</button>
+                <button
+                    class="key"
+                    data-key="14"
+                >E</button>
+                <button
+                    class="key"
+                    data-key="10"
+                >A</button>
+                <button
+                    class="key"
+                    data-key="0"
+                >0</button>
+                <button
+                    class="key"
+                    data-key="11"
+                >B</button>
+                <button
+                    class="key"
+                    data-key="15"
+                >F</button>
+            </div>
+        </div>
+        <div
+            id="disassembly-viewer"
+            class="disassembly-viewer"
+        >
+        </div>
+    </div>
+</body>
+
+</html>

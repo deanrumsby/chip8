@@ -1,0 +1,45 @@
+.app {
+    display: flex;
+    gap: 2rem;
+}
+
+.screen {
+    height: 320px;
+    width: 640px;
+    border: 1px solid black;
+    background-color: #9fa29d;
+    image-rendering: pixelated;
+}
+
+.keypad {
+    margin-top: 2em;
+    width: 320px;
+    display: grid;
+    gap: 0.2em;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.key-pressed {
+    background-color: red;
+}
+
+.disassembly-viewer {
+    max-height: 90vh;
+    overflow-y: scroll;
+}
+
+.disassembly-list {
+    list-style: none;
+}
+
+.registers-list {
+    display: flex;
+    gap: 0.5rem 1rem;
+    flex-wrap: wrap;
+    width: 32rem;
+    list-style: none;
+}
+
+.current-instruction {
+    color: red;
+}
