@@ -1,6 +1,6 @@
 const wasmPath = new URL('./root.wasm', import.meta.url);
 
-export async function init() {
+export async function init(screen) {
     const response = await fetch(wasmPath);
     const bytes = await response.arrayBuffer();
     const { instance } = await WebAssembly.instantiate(bytes);
@@ -16,6 +16,8 @@ export async function init() {
         v,
         v_len,
         step,
+        frame_buffer_ptr,
+        frame_buffer_len,
     } = instance.exports;
 
     return {
@@ -37,5 +39,10 @@ export async function init() {
             view.set(bytes, offset);
         },
         step,
+        frameBuffer: () => {
+            const offset = frame_buffer_ptr();
+            const length = frame_buffer_len();
+            return new Uint8ClampedArray(memory.buffer, offset, length);
+        }
     }
 };

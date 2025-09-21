@@ -10,20 +10,20 @@ pub const InstructionType = enum {
 pub const Instruction = struct {
     value: u16,
     opcode: u8,
-    x: u8,
-    y: u8,
+    x: usize,
+    y: usize,
     nnn: u16,
     nn: u8,
-    n: u8,
+    n: usize,
     tag: InstructionType,
 
     pub fn from_u16(value: u16) Instruction {
         const opcode: u8 = @intCast((value & 0xf000) >> 12);
-        const x: u8 = @intCast((value & 0x0f00) >> 8);
-        const y: u8 = @intCast((value & 0x00f0) >> 4);
+        const x: usize = @intCast((value & 0x0f00) >> 8);
+        const y: usize = @intCast((value & 0x00f0) >> 4);
         const nnn: u16 = value & 0x0fff;
         const nn: u8 = @intCast(value & 0x00ff);
-        const n: u8 = @intCast(value & 0x000f);
+        const n: usize = @intCast(value & 0x000f);
 
         const tag: InstructionType = switch (opcode) {
             0x0 => .op_00e0,

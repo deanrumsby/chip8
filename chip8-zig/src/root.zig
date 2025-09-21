@@ -38,3 +38,11 @@ pub export fn v_len() usize {
 pub export fn step() void {
     instance.step();
 }
+
+pub export fn frame_buffer_ptr() usize {
+    return @intFromPtr(&instance.frame_buffer);
+}
+
+pub export fn frame_buffer_len() usize {
+    return instance.frame_buffer.len;
+}

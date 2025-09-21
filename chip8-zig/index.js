@@ -134,9 +134,17 @@ function handleReset() {
  * Updates all UI elements
  */
 function updateUi() {
+    updateScreen();
     // updateButtons();
     // updateDisassemblyViewer();
     updateRegistersViewer();
+}
+
+function updateScreen() {
+    const ctx = screen.getContext('2d');
+    const buffer = chip8.frameBuffer();
+    const imageData = new ImageData(buffer, screen.width);
+    ctx.putImageData(imageData, 0, 0);
 }
 
 /**
